@@ -1,28 +1,46 @@
 {
-  "name": "daily-nourish-mobile",
+  "name": "dailynourish",
   "version": "1.0.0",
   "description": "Daily Nourish - Meal reminder app for Android",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "build-android": "cd android && ./gradlew assembleRelease",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint ."
   },
   "dependencies": {
     "react": "18.3.1",
-    "react-native": "^0.73.0",
+    "react-native": "0.73.4",
     "react-native-alarm-notification": "^9.0.2",
-    "react-native-vector-icons": "^10.0.0",
     "@react-native-async-storage/async-storage": "^1.21.0",
-    "react-native-toast-notification": "^3.4.2"
+    "react-native-vector-icons": "^10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.0",
     "@babel/preset-react": "^7.23.0",
+    "@babel/preset-typescript": "^7.23.0",
     "@babel/runtime": "^7.23.0",
+    "@react-native/babel-preset": "^0.73.0",
+    "@react-native/eslint-config": "^0.73.0",
+    "@react-native/metro-config": "^0.73.0",
+    "@types/jest": "^29.5.0",
+    "@types/react": "18.3.1",
+    "@types/react-native": "0.73.0",
     "babel-jest": "^29.7.0",
+    "eslint": "^8.45.0",
     "jest": "^29.7.0",
-    "@react-native-community/eslint-config": "^3.2.0"
+    "typescript": "5.1.6"
+  },
+  "jest": {
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }
