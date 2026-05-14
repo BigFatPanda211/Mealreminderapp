@@ -1,0 +1,28 @@
+{
+  "name": "daily-nourish-mobile",
+  "version": "1.0.0",
+  "description": "Daily Nourish - Meal reminder app for Android",
+  "main": "index.js",
+  "scripts": {
+    "android": "react-native run-android",
+    "build-android": "cd android && ./gradlew assembleRelease",
+    "start": "react-native start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-native": "^0.73.0",
+    "react-native-alarm-notification": "^9.0.2",
+    "react-native-vector-icons": "^10.0.0",
+    "@react-native-async-storage/async-storage": "^1.21.0",
+    "react-native-toast-notification": "^3.4.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-react": "^7.23.0",
+    "@babel/runtime": "^7.23.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "@react-native-community/eslint-config": "^3.2.0"
+  }
+}
