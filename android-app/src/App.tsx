@@ -9,10 +9,8 @@ import {
   Alert
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import RNAlarmNotification from 'react-native-alarm-notification';
 import MealCard from './components/MealCard';
 import WaterCounter from './components/WaterCounter';
-import NotificationScheduler from './utils/NotificationScheduler';
 
 export default function App() {
   const [waterCount, setWaterCount] = useState(0);
@@ -27,17 +25,9 @@ export default function App() {
     dinner: ''
   });
   const [country, setCountry] = useState('Pakistan');
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-
-  const mealTimes = {
-    breakfast: { start: '07:00', end: '10:00' },
-    lunch: { start: '12:00', end: '14:00' },
-    dinner: { start: '18:00', end: '20:00' }
-  };
 
   useEffect(() => {
     loadUserData();
-    scheduleNotifications();
   }, []);
 
   const loadUserData = async () => {
@@ -51,7 +41,7 @@ export default function App() {
         setCountry(data.country || 'Pakistan');
       }
     } catch (error) {
-      console.error('Failed to load user data:', error);
+      console.error('Failed to load data:', error);
     }
   };
 
@@ -67,33 +57,7 @@ export default function App() {
         })
       );
     } catch (error) {
-      console.error('Failed to save user data:', error);
-    }
-  };
-
-  const scheduleNotifications = async () => {
-    if (!notificationsEnabled) return;
-
-    const notificationTitles = {
-      breakfast: 'Time for breakfast! 🌅',
-      lunch: 'Lunch time! ☀️',
-      dinner: 'Dinner time! 🌙'
-    };
-
-    for (const [meal, times] of Object.entries(mealTimes)) {
-      const [hours, minutes] = times.start.split(':');
-      
-      try {
-        await NotificationScheduler.scheduleNotification(
-          meal,
-          notificationTitles[meal],
-          `Don't forget to log your ${meal}!`,
-          parseInt(hours),
-          parseInt(minutes)
-        );
-      } catch (error) {
-        console.error(`Failed to schedule ${meal} notification:`, error);
-      }
+      console.error('Failed to save data:', error);
     }
   };
 
@@ -147,13 +111,6 @@ export default function App() {
     saveUserData();
   };
 
-  const toggleNotifications = async () => {
-    setNotificationsEnabled(!notificationsEnabled);
-    if (!notificationsEnabled) {
-      await scheduleNotifications();
-    }
-  };
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -162,23 +119,11 @@ export default function App() {
 
         <TextInput
           style={styles.countryInput}
-          placeholder="Enter your country (e.g., Japan, India)"
+          placeholder="Enter your country"
           placeholderTextColor="#b5b5c9"
           value={country}
           onChangeText={handleCountryChange}
         />
-
-        <TouchableOpacity
-          style={[
-            styles.notificationToggle,
-            { backgroundColor: notificationsEnabled ? '#ffd4a3' : '#e0e0e0' }
-          ]}
-          onPress={toggleNotifications}
-        >
-          <Text style={styles.notificationToggleText}>
-            {notificationsEnabled ? '🔔 Notifications ON' : '🔕 Notifications OFF'}
-          </Text>
-        </TouchableOpacity>
       </View>
 
       <View style={styles.mealsContainer}>
@@ -251,21 +196,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     color: '#5a5a7a',
-    marginBottom: 16,
-    fontSize: 14
-  },
-  notificationToggle: {
-    width: '100%',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
     marginBottom: 24,
-    alignItems: 'center'
-  },
-  notificationToggleText: {
-    color: '#5a5a7a',
-    fontSize: 14,
-    fontWeight: '600'
+    fontSize: 14
   },
   mealsContainer: {
     paddingHorizontal: 20,

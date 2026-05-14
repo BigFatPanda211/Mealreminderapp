@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Daily Nourish</string>
-    <string name="debug_http_risk_title">HTTP traffic detected</string>
-    <string name="debug_http_risk_body">Unencrypted traffic is insecure. This should only be for debugging.</string>
 </resources>

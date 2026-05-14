@@ -5,8 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  Alert
+  ScrollView
 } from 'react-native';
 
 interface MealCardProps {
@@ -21,60 +20,30 @@ interface MealCardProps {
 }
 
 const MEAL_RECOMMENDATIONS: Record<string, Record<string, string[]>> = {
-  japan: {
-    breakfast: ['Miso soup with rice', 'Tamagoyaki (rolled omelette)', 'Natto and rice'],
-    lunch: ['Ramen', 'Sushi rolls', 'Katsudon'],
-    dinner: ['Teriyaki salmon with rice', 'Shabu-shabu', 'Tempura set']
-  },
-  india: {
-    breakfast: ['Idli with sambar', 'Paratha with curd', 'Poha'],
-    lunch: ['Dal and rice', 'Vegetable curry with roti', 'Biryani'],
-    dinner: ['Paneer tikka masala', 'Chole bhature', 'Dosa with chutney']
-  },
   pakistan: {
     breakfast: ['Halwa puri', 'Paratha with chai', 'Nihari', 'Anda paratha'],
     lunch: ['Biryani', 'Karahi chicken', 'Pulao', 'Daal chawal'],
     dinner: ['Seekh kebabs', 'Haleem', 'Chicken tikka', 'Roti sabzi']
+  },
+  japan: {
+    breakfast: ['Miso soup with rice', 'Tamagoyaki', 'Natto and rice'],
+    lunch: ['Ramen', 'Sushi rolls', 'Katsudon'],
+    dinner: ['Teriyaki salmon', 'Shabu-shabu', 'Tempura']
+  },
+  india: {
+    breakfast: ['Idli with sambar', 'Paratha with curd', 'Poha'],
+    lunch: ['Dal and rice', 'Vegetable curry', 'Biryani'],
+    dinner: ['Paneer tikka masala', 'Chole bhature', 'Dosa']
   },
   mexico: {
     breakfast: ['Chilaquiles', 'Huevos rancheros', 'Tamales'],
     lunch: ['Tacos al pastor', 'Enchiladas', 'Pozole'],
     dinner: ['Mole chicken', 'Chiles rellenos', 'Quesadillas']
   },
-  italy: {
-    breakfast: ['Cappuccino with cornetto', 'Frittata', 'Biscotti with coffee'],
-    lunch: ['Pasta carbonara', 'Margherita pizza', 'Risotto'],
-    dinner: ['Osso buco', 'Lasagna', 'Caprese salad with bread']
-  },
   usa: {
-    breakfast: ['Pancakes with maple syrup', 'Bacon and eggs', 'Oatmeal with fruit'],
-    lunch: ['Burger and fries', 'Caesar salad', 'Grilled cheese sandwich'],
+    breakfast: ['Pancakes', 'Bacon and eggs', 'Oatmeal'],
+    lunch: ['Burger and fries', 'Caesar salad', 'Grilled cheese'],
     dinner: ['Steak with potatoes', 'BBQ ribs', 'Mac and cheese']
-  },
-  france: {
-    breakfast: ['Croissant with butter', 'Pain au chocolat', 'Tartine with jam'],
-    lunch: ['Quiche Lorraine', 'Croque monsieur', 'French onion soup'],
-    dinner: ['Coq au vin', 'Ratatouille', 'Beef bourguignon']
-  },
-  china: {
-    breakfast: ['Congee', 'Steamed buns', 'Fried dough sticks (youtiao)'],
-    lunch: ['Dumplings', 'Fried rice', 'Kung pao chicken'],
-    dinner: ['Hot pot', 'Peking duck', 'Mapo tofu']
-  },
-  korea: {
-    breakfast: ['Kimchi fried rice', 'Soup with rice', 'Egg roll (gyeran mari)'],
-    lunch: ['Bibimbap', 'Bulgogi', 'Japchae'],
-    dinner: ['Korean BBQ', 'Kimchi stew', 'Tteokbokki']
-  },
-  thailand: {
-    breakfast: ['Rice soup (khao tom)', 'Thai omelette', 'Jok (rice porridge)'],
-    lunch: ['Pad Thai', 'Green curry', 'Tom yum soup'],
-    dinner: ['Massaman curry', 'Papaya salad with sticky rice', 'Basil chicken']
-  },
-  greece: {
-    breakfast: ['Greek yogurt with honey', 'Spanakopita', 'Bougatsa'],
-    lunch: ['Souvlaki', 'Greek salad', 'Moussaka'],
-    dinner: ['Lamb chops', 'Pastitsio', 'Stuffed peppers']
   }
 };
 
@@ -107,7 +76,7 @@ export default function MealCard({
   const recommendations = getRecommendations();
 
   return (
-    <View style={[styles.container, { borderLeftColor: color, borderLeftWidth: 4 }]}>
+    <View style={[styles.container, { borderLeftColor: color }]}>
       <View style={styles.header}>
         <View style={[styles.emoji, { backgroundColor: color }]}>
           <Text style={styles.emojiText}>{emoji}</Text>
@@ -167,7 +136,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: 20,
     padding: 16,
-    marginBottom: 12
+    marginBottom: 12,
+    borderLeftWidth: 4
   },
   header: {
     flexDirection: 'row',

@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
 import App from './src/App';
 
-AppRegistry.registerComponent('DailyNourish', () => App);
+AppRegistry.registerComponent('dailynourish', () => App);

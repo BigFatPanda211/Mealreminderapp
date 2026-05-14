@@ -28,9 +28,7 @@ export default function WaterCounter({ count, onIncrement, onDecrement }: WaterC
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.recommendation}>
-        Daily goal: 8-10 cups
-      </Text>
+      <Text style={styles.recommendation}>Daily goal: 8-10 cups</Text>
     </View>
   );
 }
