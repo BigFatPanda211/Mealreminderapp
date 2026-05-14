@@ -113,9 +113,9 @@ export default function App() {
         dinner: ['Lamb chops', 'Pastitsio', 'Stuffed peppers']
       },
       pakistan: {
-        breakfast: ['Halwa puri', 'Paratha with chai', 'Nihari'],
-        lunch: ['Biryani', 'Karahi chicken', 'Pulao'],
-        dinner: ['Seekh kebabs', 'Haleem', 'Chicken tikka']
+        breakfast: ['Halwa puri', 'Paratha with chai', 'Nihari', 'Anda paratha'],
+        lunch: ['Biryani', 'Karahi chicken', 'Pulao', 'Daal chawal'],
+        dinner: ['Seekh kebabs', 'Haleem', 'Chicken tikka', 'Roti sabzi']
       }
     };
 
