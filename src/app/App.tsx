@@ -113,9 +113,9 @@ export default function App() {
         dinner: ['Lamb chops', 'Pastitsio', 'Stuffed peppers']
       },
       pakistan: {
-        breakfast: ['Halwa puri', 'Paratha with chai', 'Nihari'],
-        lunch: ['Biryani', 'Karahi chicken', 'Pulao'],
-        dinner: ['Seekh kebabs', 'Haleem', 'Chicken tikka']
+        breakfast: ['Halwa puri', 'Paratha with chai', 'Nihari', 'Anda paratha'],
+        lunch: ['Biryani', 'Karahi chicken', 'Pulao', 'Daal chawal'],
+        dinner: ['Seekh kebabs', 'Haleem', 'Chicken tikka', 'Roti sabzi']
       }
     };
 
@@ -153,7 +153,7 @@ export default function App() {
             meal="breakfast"
             emoji="🌅"
             color="#ffd4a3"
-            time="7:00 AM - 9:00 AM"
+            time="7:00 AM - 10:00 AM"
             isCompleted={completedMeals.breakfast}
             mealDetail={mealDetails.breakfast}
             recommendations={getRecommendations('breakfast')}
