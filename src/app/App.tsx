@@ -116,6 +116,16 @@ export default function App() {
         breakfast: ['Halwa puri', 'Paratha with chai', 'Nihari', 'Anda paratha'],
         lunch: ['Biryani', 'Karahi chicken', 'Pulao', 'Daal chawal'],
         dinner: ['Seekh kebabs', 'Haleem', 'Chicken tikka', 'Roti sabzi']
+      },
+      turkey: {
+        breakfast: ['Menemen', 'Simit with cheese', 'Turkish boiled eggs', 'Pastry with honey'],
+        lunch: ['Döner kebab', 'Manti (Turkish dumplings)', 'Lahmacun', 'Turkish pizza'],
+        dinner: ['Adana kebab', 'Shish kebab', 'Lamb stew', 'Grilled fish with meze']
+      },
+      england: {
+        breakfast: ['Full English breakfast', 'Bacon and eggs', 'Baked beans on toast', 'Porridge'],
+        lunch: ['Fish and chips', 'Beef and ale pie', 'Ploughman\'s lunch', 'Shepherd\'s pie'],
+        dinner: ['Roast beef with Yorkshire pudding', 'Bangers and mash', 'Cottage pie', 'Fish cakes']
       }
     };
 
