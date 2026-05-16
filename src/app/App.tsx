@@ -58,6 +58,21 @@ export default function App() {
   const incrementWater = () => setWaterCount(prev => prev + 1);
   const decrementWater = () => setWaterCount(prev => Math.max(0, prev - 1));
 
+  const handleResetDay = () => {
+    setWaterCount(0);
+    setCompletedMeals({
+      breakfast: false,
+      lunch: false,
+      dinner: false
+    });
+    setMealDetails({
+      breakfast: '',
+      lunch: '',
+      dinner: ''
+    });
+    toast.success('Day reset! Ready for a fresh start.');
+  };
+
   const getRecommendations = (meal: 'breakfast' | 'lunch' | 'dinner'): string[] => {
     if (!country) return [];
 
@@ -198,6 +213,13 @@ export default function App() {
           onIncrement={incrementWater}
           onDecrement={decrementWater}
         />
+
+        <button
+          onClick={handleResetDay}
+          className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ff9999] to-[#ffb3b3] hover:from-[#ff8888] hover:to-[#ffa3a3] text-white font-semibold text-sm transition-all active:scale-95 shadow-sm"
+        >
+          RESET DAY
+        </button>
       </div>
     </div>
   );
