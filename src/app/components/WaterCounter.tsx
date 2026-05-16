@@ -33,14 +33,15 @@ export function WaterCounter({ count, onIncrement, onDecrement }: WaterCounterPr
 
         <button
           onClick={onIncrement}
-          className="w-12 h-12 rounded-full bg-[#d4f4ff] hover:bg-[#c4e9ff] active:scale-95 transition-all flex items-center justify-center"
+          disabled={count >= 10}
+          className="w-12 h-12 rounded-full bg-[#d4f4ff] hover:bg-[#c4e9ff] active:scale-95 transition-all flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <Plus className="w-5 h-5 text-[#6bb6d6]" strokeWidth={2.5} />
         </button>
       </div>
 
       <div className="flex gap-1 justify-center mt-6">
-        {[...Array(8)].map((_, i) => (
+        {[...Array(10)].map((_, i) => (
           <div
             key={i}
             className={`w-8 h-8 rounded-lg transition-all ${
