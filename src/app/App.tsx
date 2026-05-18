@@ -166,8 +166,7 @@ export default function App() {
   };
 
   return (
-    <div className={`size-full bg-gradient-to-br ${theme.bg} flex items-center justify-center p-6 transition-all duration-700`}>
-      <Toaster position="top-center" richColors />
+    <div className={`min-h-screen w-full bg-gradient-to-br ${theme.bg} flex flex-col items-center p-6 transition-all duration-700`}>
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-3">
           <h1 className={`text-3xl ${theme.text}`}>
