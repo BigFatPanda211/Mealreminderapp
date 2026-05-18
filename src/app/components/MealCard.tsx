@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Check } from 'lucide-react';
+import './MealCard.css';
 
 interface MealCardProps {
   meal: string;
@@ -32,7 +33,7 @@ export function MealCard({ meal, emoji, color, time, isCompleted, mealDetail, re
     <div className="w-full bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-sm flex flex-col items-start justify-start">
       <div className="flex items-center gap-4 mb-4 w-full">
         <div
-          className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl transition-all"
+          className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl transition-all ${!isCompleted ? 'animate-pulse' : ''}`}
           style={{
             backgroundColor: color,
             opacity: isCompleted ? 0.5 : 1,
