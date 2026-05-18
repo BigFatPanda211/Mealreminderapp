@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { MealCard } from './components/MealCard';
 import { WaterCounter } from './components/WaterCounter';
 import { Toaster, toast } from 'sonner';
@@ -17,6 +17,27 @@ export default function App() {
   });
   const [country, setCountry] = useState('');
 
+  useEffect(() => {
+    const saved = localStorage.getItem('dailyNourish');
+    if (saved) {
+      const data = JSON.parse(saved);
+      setWaterCount(data.waterCount || 0);
+      setCompletedMeals(data.completedMeals || { breakfast: false, lunch: false, dinner: false });
+      setMealDetails(data.mealDetails || { breakfast: '', lunch: '', dinner: '' });
+      setCountry(data.country || '');
+    }
+  }, []);
+
+  // Save to localStorage on every change
+  useEffect(() => {
+    localStorage.setItem('dailyNourish', JSON.stringify({
+      waterCount,
+      completedMeals,
+      mealDetails,
+      country
+    }));
+  }, [waterCount, completedMeals, mealDetails, country]);
+  
   const handleMealEaten = (meal: 'breakfast' | 'lunch' | 'dinner', description: string) => {
     if (!completedMeals[meal]) {
       setCompletedMeals(prev => ({ ...prev, [meal]: true }));
@@ -31,6 +52,7 @@ export default function App() {
     }
   };
 
+  
   const incrementWater = () => setWaterCount(prev => prev + 1);
   const decrementWater = () => setWaterCount(prev => Math.max(0, prev - 1));
 
@@ -45,20 +67,60 @@ export default function App() {
   const getRecommendations = (meal: 'breakfast' | 'lunch' | 'dinner'): string[] => {
     if (!country) return [];
     const recommendations: Record<string, Record<string, string[]>> = {
-      pakistan: {
-        breakfast: ['Halwa puri', 'Paratha with chai', 'Nihari', 'Anda paratha'],
-        lunch: ['Biryani', 'Karahi chicken', 'Pulao', 'Daal chawal'],
-        dinner: ['Seekh kebabs', 'Haleem', 'Chicken tikka', 'Roti sabzi']
+      japan: {
+        breakfast: ['Miso soup with rice', 'Tamagoyaki (rolled omelette)', 'Natto and rice'],
+        lunch: ['Ramen', 'Sushi rolls', 'Katsudon'],
+        dinner: ['Teriyaki salmon with rice', 'Shabu-shabu', 'Tempura set']
       },
       india: {
         breakfast: ['Idli with sambar', 'Paratha with curd', 'Poha'],
         lunch: ['Dal and rice', 'Vegetable curry with roti', 'Biryani'],
         dinner: ['Paneer tikka masala', 'Chole bhature', 'Dosa with chutney']
       },
-      japan: {
-        breakfast: ['Miso soup with rice', 'Tamagoyaki', 'Natto and rice'],
-        lunch: ['Ramen', 'Sushi rolls', 'Katsudon'],
-        dinner: ['Teriyaki salmon', 'Shabu-shabu', 'Tempura set']
+      mexico: {
+        breakfast: ['Chilaquiles', 'Huevos rancheros', 'Tamales'],
+        lunch: ['Tacos al pastor', 'Enchiladas', 'Pozole'],
+        dinner: ['Mole chicken', 'Chiles rellenos', 'Quesadillas']
+      },
+      italy: {
+        breakfast: ['Cappuccino with cornetto', 'Frittata', 'Biscotti with coffee'],
+        lunch: ['Pasta carbonara', 'Margherita pizza', 'Risotto'],
+        dinner: ['Osso buco', 'Lasagna', 'Caprese salad with bread']
+      },
+      usa: {
+        breakfast: ['Pancakes with maple syrup', 'Bacon and eggs', 'Oatmeal with fruit'],
+        lunch: ['Burger and fries', 'Caesar salad', 'Grilled cheese sandwich'],
+        dinner: ['Steak with potatoes', 'BBQ ribs', 'Mac and cheese']
+      },
+      france: {
+        breakfast: ['Croissant with butter', 'Pain au chocolat', 'Tartine with jam'],
+        lunch: ['Quiche Lorraine', 'Croque monsieur', 'French onion soup'],
+        dinner: ['Coq au vin', 'Ratatouille', 'Beef bourguignon']
+      },
+      china: {
+        breakfast: ['Congee', 'Steamed buns', 'Fried dough sticks (youtiao)'],
+        lunch: ['Dumplings', 'Fried rice', 'Kung pao chicken'],
+        dinner: ['Hot pot', 'Peking duck', 'Mapo tofu']
+      },
+      korea: {
+        breakfast: ['Kimchi fried rice', 'Soup with rice', 'Egg roll (gyeran mari)'],
+        lunch: ['Bibimbap', 'Bulgogi', 'Japchae'],
+        dinner: ['Korean BBQ', 'Kimchi stew', 'Tteokbokki']
+      },
+      thailand: {
+        breakfast: ['Rice soup (khao tom)', 'Thai omelette', 'Jok (rice porridge)'],
+        lunch: ['Pad Thai', 'Green curry', 'Tom yum soup'],
+        dinner: ['Massaman curry', 'Papaya salad with sticky rice', 'Basil chicken']
+      },
+      greece: {
+        breakfast: ['Greek yogurt with honey', 'Spanakopita', 'Bougatsa'],
+        lunch: ['Souvlaki', 'Greek salad', 'Moussaka'],
+        dinner: ['Lamb chops', 'Pastitsio', 'Stuffed peppers']
+      },
+      pakistan: {
+        breakfast: ['Halwa puri', 'Paratha with chai', 'Nihari', 'Anda paratha'],
+        lunch: ['Biryani', 'Karahi chicken', 'Pulao', 'Daal chawal'],
+        dinner: ['Seekh kebabs', 'Haleem', 'Chicken tikka', 'Roti sabzi']
       }
     };
     const countryKey = country.toLowerCase().trim();
