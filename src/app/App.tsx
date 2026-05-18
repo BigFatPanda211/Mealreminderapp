@@ -47,7 +47,7 @@ export default function App() {
 
       let message = '';
       if (eisha) {
-        if (meal === 'breakfast') message = 'Yayyyy, Eisha had a nutritious breakfast ❤️';
+        if (meal === 'breakfast') message = 'Yayyyy, Begum had a nutritious breakfast ❤️';
         if (meal === 'lunch') message = 'Wish we were together for lunch :)';
         if (meal === 'dinner') message = 'A great end to an amazing day';
       } else {
