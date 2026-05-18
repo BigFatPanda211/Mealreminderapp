@@ -28,16 +28,12 @@ export default function App() {
     }
   }, []);
 
-  // Save to localStorage on every change
   useEffect(() => {
     localStorage.setItem('dailyNourish', JSON.stringify({
-      waterCount,
-      completedMeals,
-      mealDetails,
-      country
+      waterCount, completedMeals, mealDetails, country
     }));
   }, [waterCount, completedMeals, mealDetails, country]);
-  
+
   const handleMealEaten = (meal: 'breakfast' | 'lunch' | 'dinner', description: string) => {
     if (!completedMeals[meal]) {
       setCompletedMeals(prev => ({ ...prev, [meal]: true }));
@@ -52,8 +48,7 @@ export default function App() {
     }
   };
 
-  
-  const incrementWater = () => setWaterCount(prev => prev + 1);
+  const incrementWater = () => setWaterCount(prev => Math.min(10, prev + 1));
   const decrementWater = () => setWaterCount(prev => Math.max(0, prev - 1));
 
   const handleReset = () => {
@@ -129,6 +124,8 @@ export default function App() {
     return [];
   };
 
+  const completedCount = Object.values(completedMeals).filter(Boolean).length;
+
   return (
     <div className="size-full bg-gradient-to-br from-[#fef3f3] to-[#f0f4ff] flex items-center justify-center p-6">
       <Toaster position="top-center" richColors />
@@ -146,12 +143,36 @@ export default function App() {
             />
           </div>
         </div>
+
         <div className="space-y-4">
           <MealCard meal="breakfast" emoji="🌅" color="#ffd4a3" time="7:00 AM - 10:00 AM" isCompleted={completedMeals.breakfast} mealDetail={mealDetails.breakfast} recommendations={getRecommendations('breakfast')} onEaten={(description) => handleMealEaten('breakfast', description)} />
           <MealCard meal="lunch" emoji="☀️" color="#b4e4ff" time="12:00 PM - 2:00 PM" isCompleted={completedMeals.lunch} mealDetail={mealDetails.lunch} recommendations={getRecommendations('lunch')} onEaten={(description) => handleMealEaten('lunch', description)} />
           <MealCard meal="dinner" emoji="🌙" color="#d4b3ff" time="6:00 PM - 8:00 PM" isCompleted={completedMeals.dinner} mealDetail={mealDetails.dinner} recommendations={getRecommendations('dinner')} onEaten={(description) => handleMealEaten('dinner', description)} />
         </div>
+
+        <div className="w-full bg-white/80 backdrop-blur-sm rounded-3xl p-5 shadow-sm">
+          <p className="text-sm text-[#9a9ab5] mb-3 text-center">Daily Progress</p>
+          <div className="flex justify-between mb-2">
+            {['breakfast', 'lunch', 'dinner'].map((meal) => (
+              <div key={meal} className="flex flex-col items-center gap-2">
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium transition-all ${completedMeals[meal as keyof typeof completedMeals] ? 'bg-[#a8d5ba] text-white' : 'bg-[#f0f0f8] text-[#b5b5c9]'}`}>
+                  {completedMeals[meal as keyof typeof completedMeals] ? '✓' : '○'}
+                </div>
+                <p className="text-xs text-[#9a9ab5] capitalize">{meal}</p>
+              </div>
+            ))}
+          </div>
+          <div className="w-full bg-[#f0f0f8] rounded-full h-2 mt-3">
+            <div
+              className="bg-gradient-to-r from-[#ffd4a3] to-[#d4b3ff] h-2 rounded-full transition-all duration-500"
+              style={{ width: `${(completedCount / 3) * 100}%` }}
+            />
+          </div>
+          <p className="text-xs text-center text-[#9a9ab5] mt-2">{completedCount}/3 meals completed</p>
+        </div>
+
         <WaterCounter count={waterCount} onIncrement={incrementWater} onDecrement={decrementWater} />
+
         <button onClick={handleReset} className="w-full py-3 rounded-2xl bg-[#ffb3b3] hover:bg-[#ff9999] text-white font-medium transition-all shadow-sm">
           RESET DAY
         </button>
