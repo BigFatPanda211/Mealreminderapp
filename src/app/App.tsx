@@ -166,8 +166,8 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen w-full bg-gradient-to-br ${theme.bg} flex flex-col items-center p-6 transition-all duration-700`}>
-      <div className="w-full max-w-md space-y-8">
+    <div className={`min-h-screen w-full bg-gradient-to-br ${theme.bg} flex flex-col items-center justify-start p-6 transition-all duration-700`}>
+      <div className="w-full max-w-md space-y-8 py-8">
         <div className="text-center space-y-3">
           <h1 className={`text-3xl ${theme.text}`}>
             {eisha ? '💕 Daily Nourish' : 'Daily Nourish'}
