@@ -71,7 +71,7 @@ export default function App() {
         if (meal === 'breakfast') message = 'Bonga no 01 and Bonga no 02, nashta kar lia karo -_-';
         if (meal === 'lunch') message = 'Have some lunch, you two namoonas';
         if (meal === 'dinner') message = 'Get some dinner for yourselves :)';
-      }  else if (creator) {
+      } else if (creator) {
         if (meal === 'breakfast') message = 'Eat more fiber and protien';
         if (meal === 'lunch') message = 'Eat something very light, like fruit';
         if (meal === 'dinner') message = 'Skipping meals wont be a bad thing for once';
