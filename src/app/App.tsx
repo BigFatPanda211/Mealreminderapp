@@ -223,7 +223,7 @@ export default function App() {
     reset: 'bg-[#CED1F8] hover:bg-[#A7ABDE]',
     completedBg: 'bg-[#FAE1DD]',
     title: '😎 Daily Nourish',
-    subtitle: 'Go on a friggin diet fam -_-',
+    subtitle: 'Go on a friggin diet fam 😑',
     breakfastColor: '#F7E1D7',
     lunchColor: '#DEDBD2',
     dinnerColor: '#B0C4B1',
