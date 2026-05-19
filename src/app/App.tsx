@@ -7,6 +7,7 @@ import { requestNotificationPermission, scheduleNotifications } from './notifica
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
 const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
 const isSiblings = (name: string) => ['ashi', 'mano'].includes(name.toLowerCase().trim());
+const isCreator = (name: string) => ['Asad', 'Kuchupuchu'].includes(name.toLowerCase().trim());
 
 export default function App() {
   const [waterCount, setWaterCount] = useState(0);
@@ -26,6 +27,7 @@ export default function App() {
   const eisha = isEisha(name);
   const parents = isParents(name);
   const siblings = isSiblings(name);
+  const creator = isCreator(name); 
 
   useEffect(() => {
     const saved = localStorage.getItem('dailyNourish');
@@ -69,7 +71,12 @@ export default function App() {
         if (meal === 'breakfast') message = 'Bonga no 01 and Bonga no 02, nashta kar lia karo -_-';
         if (meal === 'lunch') message = 'Have some lunch, you two namoonas';
         if (meal === 'dinner') message = 'Get some dinner for yourselves :)';
-      } else {
+      }  else if (creator) {
+        if (meal === 'breakfast') message = 'Eat more fiber and protien';
+        if (meal === 'lunch') message = 'Eat something very light, like fruit';
+        if (meal === 'dinner') message = 'Skipping meals wont be a bad thing for once';
+      }
+       else {
         const messages = {
           breakfast: ['Great start to your day!', "You're fueling your morning right!", 'Breakfast champion!', 'What a wonderful way to begin!'],
           lunch: ['Midday power-up complete!', 'Keep that energy going!', 'Fantastic lunch choice!', "You're doing amazing!"],
@@ -204,7 +211,24 @@ export default function App() {
     breakfastColor: '#F9C7D4',
     lunchColor: '#C3D0A8',
     dinnerColor: '#859E91',
-  } : {
+  }
+  : creator ? {
+    bg: 'from-[#f8edeb] to-[#fae1dd]',
+    card: 'bg-[#FFF0F0]/80',
+    progress: 'from-[#ffe5d9] to-[#ffd7ba]',
+    progressBg: 'bg-[#d8e2dc]',
+    text: 'text-[#c0717a]',
+    subtext: 'text-[#e0a0a8]',
+    input: 'bg-[#FFF0F0]/80',
+    reset: 'bg-[#fae1dd] hover:bg-[#fcd5ce]',
+    completedBg: 'bg-[#fae1dd]',
+    title: '💕 Daily Nourish',
+    subtitle: 'Made with love, just for you ❤️',
+    breakfastColor: '#f7e1d7',
+    lunchColor: '#dedbd2',
+    dinnerColor: '#b0c4b1',
+  }
+  : {
     bg: 'from-[#fef3f3] to-[#f0f4ff]',
     card: 'bg-white/80',
     progress: 'from-[#ffd4a3] to-[#d4b3ff]',
