@@ -81,7 +81,7 @@ export default function App() {
     }
   };
 
-  const incrementWater = () => setWaterCount(prev => Math.min(10, prev + 1));
+  const incrementWater = () => setWaterCount(prev => Math.min(12, prev + 1));
   const decrementWater = () => setWaterCount(prev => Math.max(0, prev - 1));
 
   const handleReset = () => {
@@ -247,9 +247,9 @@ export default function App() {
         </div>
 
         <div className="space-y-4">
-          <MealCard meal="breakfast" emoji="🌅" color={theme.breakfastColor} time="7:00 AM - 10:00 AM" isCompleted={completedMeals.breakfast} mealDetail={mealDetails.breakfast} recommendations={getRecommendations('breakfast')} onEaten={(description) => handleMealEaten('breakfast', description)} />
-          <MealCard meal="lunch" emoji="☀️" color={theme.lunchColor} time="12:00 PM - 2:00 PM" isCompleted={completedMeals.lunch} mealDetail={mealDetails.lunch} recommendations={getRecommendations('lunch')} onEaten={(description) => handleMealEaten('lunch', description)} />
-          <MealCard meal="dinner" emoji="🌙" color={theme.dinnerColor} time="6:00 PM - 8:00 PM" isCompleted={completedMeals.dinner} mealDetail={mealDetails.dinner} recommendations={getRecommendations('dinner')} onEaten={(description) => handleMealEaten('dinner', description)} />
+          <MealCard meal="breakfast" emoji="🌅" color={theme.breakfastColor} time="7:00 AM - 11:00 AM" isCompleted={completedMeals.breakfast} mealDetail={mealDetails.breakfast} recommendations={getRecommendations('breakfast')} onEaten={(description) => handleMealEaten('breakfast', description)} />
+          <MealCard meal="lunch" emoji="☀️" color={theme.lunchColor} time="12:00 PM - 3:00 PM" isCompleted={completedMeals.lunch} mealDetail={mealDetails.lunch} recommendations={getRecommendations('lunch')} onEaten={(description) => handleMealEaten('lunch', description)} />
+          <MealCard meal="dinner" emoji="🌙" color={theme.dinnerColor} time="6:00 PM - 9:00 PM" isCompleted={completedMeals.dinner} mealDetail={mealDetails.dinner} recommendations={getRecommendations('dinner')} onEaten={(description) => handleMealEaten('dinner', description)} />
         </div>
 
         <div className={`w-full ${theme.card} backdrop-blur-sm rounded-3xl p-5 shadow-sm`}>
