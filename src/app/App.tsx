@@ -7,7 +7,7 @@ import { requestNotificationPermission, scheduleNotifications } from './notifica
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
 const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
 const isSiblings = (name: string) => ['ashi', 'mano'].includes(name.toLowerCase().trim());
-const isCreator = (name: string) => ['Asad', 'Kuchupuchu'].includes(name.toLowerCase().trim());
+const isPanda = (name: string) => ['Asad', 'Kuchupuchu'].includes(name.toLowerCase().trim());
 
 export default function App() {
   const [waterCount, setWaterCount] = useState(0);
@@ -27,7 +27,7 @@ export default function App() {
   const eisha = isEisha(name);
   const parents = isParents(name);
   const siblings = isSiblings(name);
-  const creator = isCreator(name); 
+  const panda = isPanda(name); 
 
   useEffect(() => {
     const saved = localStorage.getItem('dailyNourish');
@@ -71,7 +71,7 @@ export default function App() {
         if (meal === 'breakfast') message = 'Bonga no 01 and Bonga no 02, nashta kar lia karo -_-';
         if (meal === 'lunch') message = 'Have some lunch, you two namoonas';
         if (meal === 'dinner') message = 'Get some dinner for yourselves :)';
-      } else if (creator) {
+      } else if (panda) {
         if (meal === 'breakfast') message = 'Eat more fiber and protien';
         if (meal === 'lunch') message = 'Eat something very light, like fruit';
         if (meal === 'dinner') message = 'Skipping meals wont be a bad thing for once';
@@ -212,7 +212,7 @@ export default function App() {
     lunchColor: '#C3D0A8',
     dinnerColor: '#859E91',
   }
-  : creator ? {
+  : panda ? {
     bg: 'from-[#f8edeb] to-[#fae1dd]',
     card: 'bg-[#FFF0F0]/80',
     progress: 'from-[#ffe5d9] to-[#ffd7ba]',
