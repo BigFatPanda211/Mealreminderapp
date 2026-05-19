@@ -3,6 +3,7 @@ import { MealCard } from './components/MealCard';
 import { WaterCounter } from './components/WaterCounter';
 import { Toaster, toast } from 'sonner';
 import { requestNotificationPermission, scheduleNotifications } from './notifications';
+import { logMeal, logWater } from './supabase';
 
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
 const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
@@ -57,6 +58,7 @@ export default function App() {
     if (!completedMeals[meal]) {
       setCompletedMeals(prev => ({ ...prev, [meal]: true }));
       setMealDetails(prev => ({ ...prev, [meal]: description }));
+      logMeal(name, meal, description);
 
       let message = '';
       if (eisha) {
@@ -88,8 +90,17 @@ export default function App() {
     }
   };
 
-  const incrementWater = () => setWaterCount(prev => Math.min(12, prev + 1));
-  const decrementWater = () => setWaterCount(prev => Math.max(0, prev - 1));
+  const incrementWater = () => {
+  const newCount = Math.min(12, waterCount + 1);
+  setWaterCount(newCount);
+  if (name) logWater(name, newCount);
+};
+
+const decrementWater = () => {
+  const newCount = Math.max(0, waterCount - 1);
+  setWaterCount(newCount);
+  if (name) logWater(name, newCount);
+};
 
   const handleReset = () => {
     setWaterCount(0);
