@@ -7,7 +7,7 @@ import { requestNotificationPermission, scheduleNotifications } from './notifica
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
 const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
 const isSiblings = (name: string) => ['ashi', 'mano'].includes(name.toLowerCase().trim());
-const isPanda = (name: string) => ['Asad', 'Kuchupuchu'].includes(name.toLowerCase().trim());
+const isPanda = (name: string) => ['asad', 'kuchupuchu'].includes(name.toLowerCase().trim());
 
 export default function App() {
   const [waterCount, setWaterCount] = useState(0);
@@ -264,7 +264,7 @@ export default function App() {
               type="text"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              placeholder="Enter your country (e.g., Japan, India)"
+              placeholder="Enter your country (e.g., Pakistan, Japan)"
               className={`w-full py-2.5 px-4 rounded-2xl ${theme.input} backdrop-blur-sm ${theme.text} placeholder:text-[#b5b5c9] outline-none focus:ring-2 transition-all text-center text-sm shadow-sm`}
             />
           </div>
