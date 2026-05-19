@@ -220,7 +220,7 @@ export default function App() {
     text: 'text-[#C0717A]',
     subtext: 'text-[#E0A0A8]',
     input: 'bg-[#FFF0F0]/80',
-    reset: 'bg-[#FAE1DD] hover:bg-[#FCD5CE]',
+    reset: 'bg-[#CED1F8] hover:bg-[#A7ABDE]',
     completedBg: 'bg-[#FAE1DD]',
     title: '😎 Daily Nourish',
     subtitle: 'Made with love, just for you 😎',
