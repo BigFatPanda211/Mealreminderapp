@@ -2,6 +2,7 @@
 import { MealCard } from './components/MealCard';
 import { WaterCounter } from './components/WaterCounter';
 import { Toaster, toast } from 'sonner';
+import { requestNotificationPermission, scheduleNotifications } from './notifications';
 
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
 
@@ -39,6 +40,12 @@ export default function App() {
       waterCount, completedMeals, mealDetails, country, name
     }));
   }, [waterCount, completedMeals, mealDetails, country, name]);
+
+  useEffect(() => {
+  requestNotificationPermission().then((granted) => {
+    if (granted) scheduleNotifications(eisha);
+  });
+}, [eisha]);
 
   const handleMealEaten = (meal: 'breakfast' | 'lunch' | 'dinner', description: string) => {
     if (!completedMeals[meal]) {
