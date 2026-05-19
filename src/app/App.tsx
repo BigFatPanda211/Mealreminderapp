@@ -62,7 +62,7 @@ export default function App() {
       if (eisha) {
         if (meal === 'breakfast') message = 'Yayyyy, Begum had a nutritious breakfast ❤️';
         if (meal === 'lunch') message = 'Wish we were together for lunch :)';
-        if (meal === 'dinner') message = 'A great end to an amazing day';
+        if (meal === 'dinner') message = 'Since youre done with dinner,can I have you for dessert?';
       } else if (parents) {
         if (meal === 'breakfast') message = 'ابو امّی، ناشتے کا وقت ہو گیا ہے۔';
         if (meal === 'lunch') message = 'یار، لنچ میں کیا کھانا ہے؟';
