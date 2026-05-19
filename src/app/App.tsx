@@ -5,8 +5,8 @@ import { Toaster, toast } from 'sonner';
 import { requestNotificationPermission, scheduleNotifications } from './notifications';
 
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
-const isParents = (name: string) => ['abu', 'ammi', 'Javed_Arshad', 'Rubina_Javed'].includes(name.toLowerCase().trim());
-const isSiblings = (name: string) => ['ashi', 'mano', 'Ayesha_Javed', 'Maryam_Javed'].includes(name.toLowerCase().trim());
+const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
+const isSiblings = (name: string) => ['ashi', 'mano'].includes(name.toLowerCase().trim());
 
 export default function App() {
   const [waterCount, setWaterCount] = useState(0);
