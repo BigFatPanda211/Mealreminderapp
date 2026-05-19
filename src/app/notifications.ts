@@ -5,33 +5,36 @@ export const requestNotificationPermission = async (): Promise<boolean> => {
   return permission === 'granted';
 };
 
-export const scheduleNotifications = (isEisha: boolean) => {
+export const scheduleNotifications = async (isEisha: boolean) => {
   if (Notification.permission !== 'granted') return;
 
+  // Register service worker
+  if (!('serviceWorker' in navigator)) return;
+
+  const registration = await navigator.serviceWorker.register('/sw.js');
+  await navigator.serviceWorker.ready;
+
   const now = new Date();
+  const notifications: { delay: number; title: string; body: string }[] = [];
 
   const meals = [
     {
-      hour: 9,
-      minute: 0,
+      hour: 9, minute: 0,
       title: isEisha ? 'Time for breakfast, Begum! ❤️' : 'Time for breakfast! 🌅',
       body: isEisha ? 'Start your day with something delicious 💕' : 'Start your day right!'
     },
     {
-      hour: 13,
-      minute: 30,
+      hour: 13, minute: 30,
       title: isEisha ? "Don't forget lunch, Begum! ☀️" : "Don't forget lunch! ☀️",
       body: isEisha ? 'Wish we were together for lunch :)' : 'Keep your energy up!'
     },
     {
-      hour: 19,
-      minute: 15,
+      hour: 18, minute: 0,
       title: isEisha ? 'Dinner time, Begum! 🌙' : 'Dinner time! 🌙',
       body: isEisha ? 'A great end to an amazing day ❤️' : 'End your day with a good meal!'
     }
   ];
 
-  // Water reminders every hour from 7 AM to 8 PM
   const waterMessages = isEisha ? [
     'Time to drink some water, Begum! 💧',
     'Stay hydrated my love! 💕',
@@ -44,41 +47,35 @@ export const scheduleNotifications = (isEisha: boolean) => {
     'Hydration check! Drink up! 💧',
   ];
 
-  for (let hour = 8; hour <= 19; hour++) {
+  // Water reminders every hour from 8 AM to 7 PM
+  for (let hour = 1; hour <= 19; hour++) {
     const scheduled = new Date();
     scheduled.setHours(hour, 0, 0, 0);
+    if (scheduled <= now) scheduled.setDate(scheduled.getDate() + 1);
 
-    if (scheduled <= now) {
-      scheduled.setDate(scheduled.getDate() + 1);
-    }
-
-    const delay = scheduled.getTime() - now.getTime();
-    const message = waterMessages[(hour - 8) % waterMessages.length];
-
-    setTimeout(() => {
-      new Notification('💧 Water Reminder', {
-        body: message,
-        icon: '/favicon.ico'
-      });
-    }, delay);
+    notifications.push({
+      delay: scheduled.getTime() - now.getTime(),
+      title: '💧 Water Reminder',
+      body: waterMessages[(hour - 8) % waterMessages.length]
+    });
   }
 
-  // Schedule meal notifications
+  // Meal reminders
   meals.forEach(({ hour, minute, title, body }) => {
     const scheduled = new Date();
     scheduled.setHours(hour, minute, 0, 0);
+    if (scheduled <= now) scheduled.setDate(scheduled.getDate() + 1);
 
-    if (scheduled <= now) {
-      scheduled.setDate(scheduled.getDate() + 1);
-    }
+    notifications.push({
+      delay: scheduled.getTime() - now.getTime(),
+      title,
+      body
+    });
+  });
 
-    const delay = scheduled.getTime() - now.getTime();
-
-    setTimeout(() => {
-      new Notification(title, {
-        body,
-        icon: '/favicon.ico'
-      });
-    }, delay);
+  // Send to service worker
+  registration.active?.postMessage({
+    type: 'SCHEDULE_NOTIFICATIONS',
+    notifications
   });
 };
