@@ -5,6 +5,8 @@ import { Toaster, toast } from 'sonner';
 import { requestNotificationPermission, scheduleNotifications } from './notifications';
 
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
+const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
+const isSiblings = (name: string) => ['ashi', 'mano'].includes(name.toLowerCase().trim());
 
 export default function App() {
   const [waterCount, setWaterCount] = useState(0);
@@ -22,6 +24,8 @@ export default function App() {
   const [name, setName] = useState('');
 
   const eisha = isEisha(name);
+  const parents = isParents(name);
+  const siblings = isSiblings(name);
 
   useEffect(() => {
     const saved = localStorage.getItem('dailyNourish');
@@ -42,10 +46,10 @@ export default function App() {
   }, [waterCount, completedMeals, mealDetails, country, name]);
 
   useEffect(() => {
-  requestNotificationPermission().then((granted) => {
-    if (granted) scheduleNotifications(eisha);
-  });
-}, [eisha]);
+    requestNotificationPermission().then((granted) => {
+      if (granted) scheduleNotifications(eisha);
+    });
+  }, [eisha]);
 
   const handleMealEaten = (meal: 'breakfast' | 'lunch' | 'dinner', description: string) => {
     if (!completedMeals[meal]) {
@@ -57,6 +61,14 @@ export default function App() {
         if (meal === 'breakfast') message = 'Yayyyy, Begum had a nutritious breakfast ❤️';
         if (meal === 'lunch') message = 'Wish we were together for lunch :)';
         if (meal === 'dinner') message = 'A great end to an amazing day';
+      } else if (parents) {
+        if (meal === 'breakfast') message = 'ابو امّی، ناشتے کا وقت ہو گیا ہے۔';
+        if (meal === 'lunch') message = 'یار، لنچ میں کیا کھانا ہے؟';
+        if (meal === 'dinner') message = 'امّی، کھانے میں کیا بنا ہے';
+      } else if (siblings) {
+        if (meal === 'breakfast') message = 'Bongas, nashta kar lia karo -_-';
+        if (meal === 'lunch') message = 'Have some lunch, you two namoonas';
+        if (meal === 'dinner') message = 'Get some dinner for yourselves :)';
       } else {
         const messages = {
           breakfast: ['Great start to your day!', "You're fueling your morning right!", 'Breakfast champion!', 'What a wonderful way to begin!'],
@@ -147,11 +159,9 @@ export default function App() {
 
   const completedCount = Object.values(completedMeals).filter(Boolean).length;
 
-  // Theme colors
   const theme = eisha ? {
     bg: 'from-[#FFE5E7] to-[#F9DCC0]',
     card: 'bg-[#FFF0F0]/80',
-    accent: 'from-[#FFD3D6] to-[#FFB0B5]',
     progress: 'from-[#FFC6CA] to-[#FFB0B5]',
     progressBg: 'bg-[#FFE5E7]',
     text: 'text-[#c0717a]',
@@ -159,10 +169,44 @@ export default function App() {
     input: 'bg-[#FFF0F0]/80',
     reset: 'bg-[#FFB0B5] hover:bg-[#FF9BA1]',
     completedBg: 'bg-[#FFB0B5]',
+    title: '💕 Daily Nourish',
+    subtitle: 'Made with love, just for you ❤️',
+    breakfastColor: '#F9DCC0',
+    lunchColor: '#FFC6CA',
+    dinnerColor: '#FFB0B5',
+  } : parents ? {
+    bg: 'from-[#F0E2C3] to-[#DCECE9]',
+    card: 'bg-[#F2EAE0]/80',
+    progress: 'from-[#F6C7B3] to-[#82B2C0]',
+    progressBg: 'bg-[#C3DEDD]',
+    text: 'text-[#82B2C0]',
+    subtext: 'text-[#a0c4c8]',
+    input: 'bg-[#F2EAE0]/80',
+    reset: 'bg-[#F6C7B3] hover:bg-[#f0b09a]',
+    completedBg: 'bg-[#82B2C0]',
+    title: '☀️ Daily Nourish',
+    subtitle: 'صحت مند رہیں، خوش رہیں',
+    breakfastColor: '#F0E2C3',
+    lunchColor: '#F6C7B3',
+    dinnerColor: '#C3DEDD',
+  } : siblings ? {
+    bg: 'from-[#F9C7D4] to-[#F0EEE2]',
+    card: 'bg-[#F7E0E4]/80',
+    progress: 'from-[#C3D0A8] to-[#859E91]',
+    progressBg: 'bg-[#F0EEE2]',
+    text: 'text-[#859E91]',
+    subtext: 'text-[#99AC73]',
+    input: 'bg-[#F7E0E4]/80',
+    reset: 'bg-[#859E91] hover:bg-[#6e8a7a]',
+    completedBg: 'bg-[#99AC73]',
+    title: '🌿 Daily Nourish',
+    subtitle: 'Eat up, you two!',
+    breakfastColor: '#F9C7D4',
+    lunchColor: '#C3D0A8',
+    dinnerColor: '#859E91',
   } : {
     bg: 'from-[#fef3f3] to-[#f0f4ff]',
     card: 'bg-white/80',
-    accent: 'from-[#ffd4a3]/20 to-[#d4b3ff]/20',
     progress: 'from-[#ffd4a3] to-[#d4b3ff]',
     progressBg: 'bg-[#f0f0f8]',
     text: 'text-[#5a5a7a]',
@@ -170,41 +214,42 @@ export default function App() {
     input: 'bg-white/80',
     reset: 'bg-[#ffb3b3] hover:bg-[#ff9999]',
     completedBg: 'bg-[#a8d5ba]',
+    title: 'Daily Nourish',
+    subtitle: 'Stay healthy, stay happy',
+    breakfastColor: '#ffd4a3',
+    lunchColor: '#b4e4ff',
+    dinnerColor: '#d4b3ff',
   };
 
   return (
     <div className={`min-h-screen w-full bg-gradient-to-br ${theme.bg} flex flex-col items-center justify-start p-6 transition-all duration-700`}>
+      <Toaster position="top-center" richColors />
       <div className="w-full max-w-md space-y-8 py-8">
         <div className="text-center space-y-3">
-          <h1 className={`text-3xl ${theme.text}`}>
-            {eisha ? '💕 Daily Nourish' : 'Daily Nourish'}
-          </h1>
-          <p className={`text-sm ${theme.subtext}`}>
-            {eisha ? 'Made with love, just for you ❤️' : 'Stay healthy, stay happy'}
-          </p>
-
+          <h1 className={`text-3xl ${theme.text}`}>{theme.title}</h1>
+          <p className={`text-sm ${theme.subtext}`}>{theme.subtitle}</p>
           <div className="pt-2 space-y-2">
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name"
-              className={`w-full py-2.5 px-4 rounded-2xl ${theme.input} backdrop-blur-sm ${theme.text} placeholder:text-[#b5b5c9] outline-none focus:ring-2 focus:ring-[#FFC6CA]/30 transition-all text-center text-sm shadow-sm`}
+              className={`w-full py-2.5 px-4 rounded-2xl ${theme.input} backdrop-blur-sm ${theme.text} placeholder:text-[#b5b5c9] outline-none focus:ring-2 transition-all text-center text-sm shadow-sm`}
             />
             <input
               type="text"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
               placeholder="Enter your country (e.g., Japan, India)"
-              className={`w-full py-2.5 px-4 rounded-2xl ${theme.input} backdrop-blur-sm ${theme.text} placeholder:text-[#b5b5c9] outline-none focus:ring-2 focus:ring-[#FFC6CA]/30 transition-all text-center text-sm shadow-sm`}
+              className={`w-full py-2.5 px-4 rounded-2xl ${theme.input} backdrop-blur-sm ${theme.text} placeholder:text-[#b5b5c9] outline-none focus:ring-2 transition-all text-center text-sm shadow-sm`}
             />
           </div>
         </div>
 
         <div className="space-y-4">
-          <MealCard meal="breakfast" emoji="🌅" color={eisha ? '#F9DCC0' : '#ffd4a3'} time="7:00 AM - 10:00 AM" isCompleted={completedMeals.breakfast} mealDetail={mealDetails.breakfast} recommendations={getRecommendations('breakfast')} onEaten={(description) => handleMealEaten('breakfast', description)} />
-          <MealCard meal="lunch" emoji="☀️" color={eisha ? '#FFC6CA' : '#b4e4ff'} time="12:00 PM - 2:00 PM" isCompleted={completedMeals.lunch} mealDetail={mealDetails.lunch} recommendations={getRecommendations('lunch')} onEaten={(description) => handleMealEaten('lunch', description)} />
-          <MealCard meal="dinner" emoji="🌙" color={eisha ? '#FFB0B5' : '#d4b3ff'} time="6:00 PM - 8:00 PM" isCompleted={completedMeals.dinner} mealDetail={mealDetails.dinner} recommendations={getRecommendations('dinner')} onEaten={(description) => handleMealEaten('dinner', description)} />
+          <MealCard meal="breakfast" emoji="🌅" color={theme.breakfastColor} time="7:00 AM - 10:00 AM" isCompleted={completedMeals.breakfast} mealDetail={mealDetails.breakfast} recommendations={getRecommendations('breakfast')} onEaten={(description) => handleMealEaten('breakfast', description)} />
+          <MealCard meal="lunch" emoji="☀️" color={theme.lunchColor} time="12:00 PM - 2:00 PM" isCompleted={completedMeals.lunch} mealDetail={mealDetails.lunch} recommendations={getRecommendations('lunch')} onEaten={(description) => handleMealEaten('lunch', description)} />
+          <MealCard meal="dinner" emoji="🌙" color={theme.dinnerColor} time="6:00 PM - 8:00 PM" isCompleted={completedMeals.dinner} mealDetail={mealDetails.dinner} recommendations={getRecommendations('dinner')} onEaten={(description) => handleMealEaten('dinner', description)} />
         </div>
 
         <div className={`w-full ${theme.card} backdrop-blur-sm rounded-3xl p-5 shadow-sm`}>
