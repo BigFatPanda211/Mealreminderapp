@@ -5,8 +5,8 @@ import { Toaster, toast } from 'sonner';
 import { requestNotificationPermission, scheduleNotifications } from './notifications';
 
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
-const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
-const isSiblings = (name: string) => ['ashi', 'mano'].includes(name.toLowerCase().trim());
+const isParents = (name: string) => ['abu', 'ammi', 'Javed Arshad', 'Rubina Javed'].includes(name.toLowerCase().trim());
+const isSiblings = (name: string) => ['ashi', 'mano', 'Ayesha Javed', 'Maryam Javed'].includes(name.toLowerCase().trim());
 
 export default function App() {
   const [waterCount, setWaterCount] = useState(0);
@@ -66,7 +66,7 @@ export default function App() {
         if (meal === 'lunch') message = 'یار، لنچ میں کیا کھانا ہے؟';
         if (meal === 'dinner') message = 'امّی، کھانے میں کیا بنا ہے';
       } else if (siblings) {
-        if (meal === 'breakfast') message = 'Bongas, nashta kar lia karo -_-';
+        if (meal === 'breakfast') message = 'Bonga no 01 and Bonga no 02, nashta kar lia karo -_-';
         if (meal === 'lunch') message = 'Have some lunch, you two namoonas';
         if (meal === 'dinner') message = 'Get some dinner for yourselves :)';
       } else {
@@ -184,7 +184,7 @@ export default function App() {
     input: 'bg-[#F2EAE0]/80',
     reset: 'bg-[#F6C7B3] hover:bg-[#f0b09a]',
     completedBg: 'bg-[#82B2C0]',
-    title: '☀️ Daily Nourish',
+    title: '💑 Daily Nourish',
     subtitle: 'صحت مند رہیں، خوش رہیں',
     breakfastColor: '#F0E2C3',
     lunchColor: '#F6C7B3',
