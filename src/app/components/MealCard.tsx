@@ -15,6 +15,9 @@ interface MealCardProps {
 export function MealCard({ meal, emoji, color, time, isCompleted, mealDetail, recommendations, onEaten }: MealCardProps) {
   const [inputValue, setInputValue] = useState('');
 
+  const [editingMeal, setEditingMeal] = useState(false);
+  const [editValue, setEditValue] = useState('');
+
   const handleSubmit = () => {
     if (inputValue.trim()) {
       onEaten(inputValue.trim());
@@ -72,9 +75,40 @@ export function MealCard({ meal, emoji, color, time, isCompleted, mealDetail, re
       )}
 
       {isCompleted ? (
-        <div className="py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ffd4a3]/10 to-[#d4b3ff]/10 text-[#5a5a7a] text-sm">
-          {mealDetail || 'Meal logged'}
+  <div className="w-full space-y-2">
+    {editingMeal ? (
+      <div className="space-y-2">
+        <input
+          type="text"
+          value={editValue}
+          onChange={(e) => setEditValue(e.target.value)}
+          className="w-full py-2 px-4 rounded-2xl bg-[#f8f8fb] text-[#5a5a7a] placeholder:text-[#b5b5c9] outline-none focus:ring-2 focus:ring-[#d4b3ff]/30 transition-all"
+          autoFocus
+        />
+        <div className="flex gap-2">
+          <button
+            onClick={() => { onEaten(editValue); setEditingMeal(false); }}
+            className="flex-1 py-2 rounded-2xl bg-[#a8d5ba] text-white text-sm transition-all"
+          >
+            Save
+          </button>
+          <button
+            onClick={() => setEditingMeal(false)}
+            className="flex-1 py-2 rounded-2xl bg-[#f0f0f8] text-[#9a9ab5] text-sm transition-all"
+          >
+            Cancel
+          </button>
         </div>
+      </div>
+    ) : (
+      <div
+        onClick={() => { setEditValue(mealDetail); setEditingMeal(true); }}
+        className="py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ffd4a3]/10 to-[#d4b3ff]/10 text-[#5a5a7a] text-sm cursor-pointer hover:from-[#ffd4a3]/20 hover:to-[#d4b3ff]/20 transition-all"
+      >
+        {mealDetail || 'Meal logged'} ✏️
+      </div>
+    )}
+  </div>
       ) : (
         <div className="space-y-2">
           <input
