@@ -41,7 +41,7 @@ export function WaterCounter({ count, onIncrement, onDecrement, onSetCount }: Wa
         </button>
       </div>
 
-      <div className="flex gap-1.5 justify-center mt-6 flex-wrap">
+      <div className="grid grid-cols-6 gap-1.5 mt-6">
         {[...Array(12)].map((_, i) => (
   <div
     key={i}

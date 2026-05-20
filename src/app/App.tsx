@@ -276,7 +276,7 @@ const setWaterCountDirect = (count: number) => {
   return (
     <div className={`min-h-screen w-full bg-gradient-to-br ${theme.bg} flex flex-col items-center justify-start p-6 transition-all duration-700`}>
       <Toaster position="top-center" richColors />
-      <div className="w-full max-w-md space-y-8 py-8">
+      <div className="w-full max-w-md space-y-5 py-6">
         <div className="text-center space-y-3">
           {streak > 0 && (
   <div className={`inline-flex items-center gap-2 px-5 py-2 rounded-full ${theme.card} border border-white/60 shadow-md text-sm font-semibold ${theme.text}`}>
@@ -303,7 +303,7 @@ const setWaterCountDirect = (count: number) => {
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           <MealCard meal="breakfast" emoji="🌅" color={theme.breakfastColor} time="7:00 AM - 11:00 AM" isCompleted={completedMeals.breakfast} mealDetail={mealDetails.breakfast} recommendations={getRecommendations('breakfast')} onEaten={(description) => handleMealEaten('breakfast', description)} />
           <MealCard meal="lunch" emoji="☀️" color={theme.lunchColor} time="12:00 PM - 3:00 PM" isCompleted={completedMeals.lunch} mealDetail={mealDetails.lunch} recommendations={getRecommendations('lunch')} onEaten={(description) => handleMealEaten('lunch', description)} />
           <MealCard meal="dinner" emoji="🌙" color={theme.dinnerColor} time="6:00 PM - 9:00 PM" isCompleted={completedMeals.dinner} mealDetail={mealDetails.dinner} recommendations={getRecommendations('dinner')} onEaten={(description) => handleMealEaten('dinner', description)} />
