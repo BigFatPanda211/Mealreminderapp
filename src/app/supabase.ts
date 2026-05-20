@@ -21,3 +21,42 @@ export const logWater = async (userName: string, glasses: number) => {
     date: new Date().toISOString().split('T')[0]
   }, { onConflict: 'user_name,date' });
 };
+export const updateStreak = async (userName: string) => {
+  const today = new Date().toISOString().split('T')[0];
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+
+  const { data } = await supabase
+    .from('streaks')
+    .select('*')
+    .eq('user_name', userName)
+    .single();
+
+  if (!data) {
+    // First time user
+    await supabase.from('streaks').insert({
+      user_name: userName,
+      current_streak: 1,
+      longest_streak: 1,
+      last_logged_date: today
+    });
+    return 1;
+  }
+
+  if (data.last_logged_date === today) {
+    return data.current_streak; // Already logged today
+  }
+
+  const newStreak = data.last_logged_date === yesterday
+    ? data.current_streak + 1
+    : 1; // Streak broken
+
+  const longestStreak = Math.max(newStreak, data.longest_streak);
+
+  await supabase.from('streaks').update({
+    current_streak: newStreak,
+    longest_streak: longestStreak,
+    last_logged_date: today
+  }).eq('user_name', userName);
+
+  return newStreak;
+};

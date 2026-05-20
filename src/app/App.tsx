@@ -3,7 +3,8 @@ import { MealCard } from './components/MealCard';
 import { WaterCounter } from './components/WaterCounter';
 import { Toaster, toast } from 'sonner';
 import { requestNotificationPermission, scheduleNotifications } from './notifications';
-import { logMeal, logWater } from './supabase';
+import { logMeal, logWater, updateStreak } from './supabase';
+
 
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
 const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
@@ -25,6 +26,7 @@ export default function App() {
   const [country, setCountry] = useState('');
   const [name, setName] = useState('');
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [streak, setStreak] = useState(0);
 
   const eisha = isEisha(name);
   const parents = isParents(name);
@@ -60,6 +62,7 @@ export default function App() {
       setCompletedMeals(prev => ({ ...prev, [meal]: true }));
       setMealDetails(prev => ({ ...prev, [meal]: description }));
       logMeal(name, meal, description);
+      updateStreak(name).then(s => setStreak(s));
 
       let message = '';
       if (eisha) {
@@ -262,6 +265,11 @@ const decrementWater = () => {
       <Toaster position="top-center" richColors />
       <div className="w-full max-w-md space-y-8 py-8">
         <div className="text-center space-y-3">
+          {streak > 0 && (
+  <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full ${theme.card} text-sm ${theme.text}`}>
+    🔥 {streak} day streak!
+  </div>
+)}
           <h1 className={`text-3xl ${theme.text}`}>{theme.title}</h1>
           <p className={`text-sm ${theme.subtext}`}>{theme.subtitle}</p>
           <div className="pt-2 space-y-2">
