@@ -5,6 +5,13 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
+export const saveFCMToken = async (userName: string, token: string) => {
+  await supabase.from('fcm_tokens').upsert({
+    user_name: userName,
+    token
+  }, { onConflict: 'user_name,token' });
+};
+
 export const logMeal = async (userName: string, mealType: string, foodEaten: string) => {
   await supabase.from('meal_logs').insert({
     user_name: userName,

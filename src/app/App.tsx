@@ -4,8 +4,8 @@ import { WaterCounter } from './components/WaterCounter';
 import { Toaster, toast } from 'sonner';
 import { requestNotificationPermission, scheduleNotifications } from './notifications';
 import { requestFCMToken } from './firebase';
-import { logMeal, logWater, updateStreak, supabase } from './supabase';
 import { useNavigate } from 'react-router';
+import { logMeal, logWater, updateStreak, supabase, saveFCMToken } from './supabase';
 
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
 const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
@@ -69,7 +69,10 @@ export default function App() {
   useEffect(() => {
   if (name) {
     requestFCMToken().then(token => {
-      if (token) console.log('FCM Token:', token);
+      if (token) {
+        console.log('FCM Token:', token);
+        saveFCMToken(name, token);
+      }
     });
   }
 }, [name]);
