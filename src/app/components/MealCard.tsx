@@ -32,7 +32,7 @@ export function MealCard({ meal, emoji, color, time, isCompleted, mealDetail, re
   };
 
   return (
-    <div className="w-full bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-sm flex flex-col items-start justify-start">
+    <div className="w-full bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col items-start justify-start border border-white/60">
       <div className="flex items-center gap-4 mb-4 w-full">
         <div
           className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl transition-all"
