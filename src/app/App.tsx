@@ -5,6 +5,7 @@ import { Toaster, toast } from 'sonner';
 import { requestNotificationPermission, scheduleNotifications } from './notifications';
 import { requestFCMToken } from './firebase';
 import { logMeal, logWater, updateStreak, supabase } from './supabase';
+import { useNavigate } from 'react-router';
 
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
 const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
@@ -31,7 +32,8 @@ export default function App() {
   const eisha = isEisha(name);
   const parents = isParents(name);
   const siblings = isSiblings(name);
-  const panda = isPanda(name); 
+  const panda = isPanda(name);
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const saved = localStorage.getItem('dailyNourish');
@@ -78,7 +80,7 @@ export default function App() {
       setMealDetails(prev => ({ ...prev, [meal]: description }));
       logMeal(name, meal, description);
       updateStreak(name).then(s => setStreak(s));
-
+  
       let message = '';
       if (eisha) {
         if (meal === 'breakfast') message = 'Yayyyy, Begum had a nutritious breakfast ❤️';
@@ -338,12 +340,21 @@ const setWaterCountDirect = (count: number) => {
 
         <WaterCounter count={waterCount} onIncrement={incrementWater} onDecrement={decrementWater} onSetCount={setWaterCountDirect} />
 
-       <button
-  onClick={() => setShowResetConfirm(true)}
-  className={`w-full py-3 rounded-2xl ${theme.reset} text-white font-medium transition-all shadow-sm`}
->
-  RESET DAY
-</button>
+       <div className="space-y-3">
+  <button
+    onClick={() => navigate('/reports')}
+    className={`w-full py-3 rounded-2xl ${theme.card} border border-white/60 ${theme.text} font-medium transition-all shadow-sm`}
+  >
+    Monthly Report
+  </button>
+
+  <button
+    onClick={() => setShowResetConfirm(true)}
+    className={`w-full py-3 rounded-2xl ${theme.reset} text-white font-medium transition-all shadow-sm`}
+  >
+    RESET DAY
+  </button>
+</div>
      </div>
 
       {showResetConfirm && (
