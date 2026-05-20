@@ -114,6 +114,11 @@ const decrementWater = () => {
   if (name) logWater(name, newCount);
 };
 
+const setWaterCountDirect = (count: number) => {
+  setWaterCount(count);
+  if (name) logWater(name, count);
+};
+
   const handleReset = () => {
     setWaterCount(0);
     setCompletedMeals({ breakfast: false, lunch: false, dinner: false });
@@ -324,7 +329,7 @@ const decrementWater = () => {
   <p className={`text-xs text-center ${theme.subtext} mt-1`}>{completedCount}/3 meals completed</p>
 </div>
 
-        <WaterCounter count={waterCount} onIncrement={incrementWater} onDecrement={decrementWater} />
+        <WaterCounter count={waterCount} onIncrement={incrementWater} onDecrement={decrementWater} onSetCount={setWaterCountDirect} />
 
        <button
   onClick={() => setShowResetConfirm(true)}
