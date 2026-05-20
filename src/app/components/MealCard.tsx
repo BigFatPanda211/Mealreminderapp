@@ -82,7 +82,7 @@ export function MealCard({ meal, emoji, color, time, isCompleted, mealDetail, re
           type="text"
           value={editValue}
           onChange={(e) => setEditValue(e.target.value)}
-          className="w-full py-2 px-4 rounded-2xl bg-[#f8f8fb] text-[#5a5a7a] placeholder:text-[#b5b5c9] outline-none focus:ring-2 focus:ring-[#d4b3ff]/30 transition-all"
+          className="w-full py-3 px-4 rounded-2xl bg-[#f8f8fb] text-[#5a5a7a] placeholder:text-[#b5b5c9] outline-none focus:ring-2 focus:ring-[#d4b3ff]/40 border border-[#ebebf5] focus:border-[#d4b3ff]/50 transition-all shadow-sm"
           autoFocus
         />
         <div className="flex gap-2">
@@ -117,12 +117,12 @@ export function MealCard({ meal, emoji, color, time, isCompleted, mealDetail, re
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="What did you eat?"
-            className="w-full py-2 px-4 rounded-2xl bg-[#f8f8fb] text-[#5a5a7a] placeholder:text-[#b5b5c9] outline-none focus:ring-2 focus:ring-[#d4b3ff]/30 transition-all"
+            className="w-full py-3 px-4 rounded-2xl bg-[#f8f8fb] text-[#5a5a7a] placeholder:text-[#b5b5c9] outline-none focus:ring-2 focus:ring-[#d4b3ff]/40 border border-[#ebebf5] focus:border-[#d4b3ff]/50 transition-all shadow-sm"
           />
           <button
             onClick={handleSubmit}
             disabled={!inputValue.trim()}
-            className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#ffd4a3]/20 to-[#d4b3ff]/20 hover:from-[#ffd4a3]/30 hover:to-[#d4b3ff]/30 transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed text-[#5a5a7a]"
+            className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#ffb347] to-[#c084fc] hover:from-[#ffa030] hover:to-[#a855f7] transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold shadow-md"
           >
             Eaten
           </button>
