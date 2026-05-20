@@ -4,7 +4,7 @@ import { WaterCounter } from './components/WaterCounter';
 import { Toaster, toast } from 'sonner';
 import { requestNotificationPermission, scheduleNotifications } from './notifications';
 import { logMeal, logWater, updateStreak } from './supabase';
-
+import { requestFCMToken } from './firebase';
 
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
 const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
@@ -57,6 +57,13 @@ export default function App() {
     });
   }, [eisha]);
 
+  useEffect(() => {
+  if (name) {
+    requestFCMToken().then(token => {
+      if (token) console.log('FCM Token:', token);
+    });
+  }
+}, [name]);
   const handleMealEaten = (meal: 'breakfast' | 'lunch' | 'dinner', description: string) => {
     if (!completedMeals[meal]) {
       setCompletedMeals(prev => ({ ...prev, [meal]: true }));
