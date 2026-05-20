@@ -24,6 +24,7 @@ export default function App() {
   });
   const [country, setCountry] = useState('');
   const [name, setName] = useState('');
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   const eisha = isEisha(name);
   const parents = isParents(name);
@@ -310,10 +311,36 @@ const decrementWater = () => {
 
         <WaterCounter count={waterCount} onIncrement={incrementWater} onDecrement={decrementWater} />
 
-        <button onClick={handleReset} className={`w-full py-3 rounded-2xl ${theme.reset} text-white font-medium transition-all shadow-sm`}>
-          RESET DAY
-        </button>
-      </div>
+       <button
+  onClick={() => setShowResetConfirm(true)}
+  className={`w-full py-3 rounded-2xl ${theme.reset} text-white font-medium transition-all shadow-sm`}
+>
+  RESET DAY
+</button>
+     </div>
+
+      {showResetConfirm && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+          <div className={`w-full max-w-sm rounded-3xl p-6 shadow-xl ${theme.card} space-y-4`}>
+            <h2 className={`text-xl font-medium text-center ${theme.text}`}>Reset the day?</h2>
+            <p className={`text-sm text-center ${theme.subtext}`}>This will clear all your meals and water intake for today.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowResetConfirm(false)}
+                className={`flex-1 py-3 rounded-2xl ${theme.progressBg} ${theme.subtext} font-medium transition-all`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => { handleReset(); setShowResetConfirm(false); }}
+                className={`flex-1 py-3 rounded-2xl ${theme.reset} text-white font-medium transition-all`}
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
