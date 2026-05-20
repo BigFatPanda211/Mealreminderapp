@@ -342,11 +342,11 @@ const setWaterCountDirect = (count: number) => {
 
        <div className="space-y-3">
   <button
-    onClick={() => navigate('/reports')}
-    className={`w-full py-3 rounded-2xl ${theme.card} border border-white/60 ${theme.text} font-medium transition-all shadow-sm`}
-  >
-    Monthly Report
-  </button>
+  onClick={() => navigate('/reports')}
+  className={`w-full py-3 rounded-2xl bg-gradient-to-r from-[#a8d5ba] to-[#87ceeb] hover:from-[#90c9a5] hover:to-[#6bb6d6] text-white font-medium transition-all shadow-md active:scale-[0.98]`}
+>
+  Monthly Report
+</button>
 
   <button
     onClick={() => setShowResetConfirm(true)}
