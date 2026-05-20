@@ -5,28 +5,65 @@ const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const serviceAccountJson = Deno.env.get('FCM_SERVICE_ACCOUNT')!;
 
+const getMessages = (userName: string, mealTime: 'breakfast' | 'lunch' | 'dinner') => {
+  const name = userName.toLowerCase().trim();
+
+  const isEisha = ['eisha', 'begum'].includes(name);
+  const isParents = ['abu', 'ammi'].includes(name);
+  const isSiblings = ['ashi', 'mano'].includes(name);
+  const isPanda = ['asad', 'kuchupuchu'].includes(name);
+
+  if (isEisha) {
+    return {
+      breakfast: { title: 'Time for breakfast, Begum! ❤️', body: 'Start your day with something delicious 💕' },
+      lunch: { title: "Don't forget lunch, Begum! ☀️", body: 'Wish we were together for lunch :)' },
+      dinner: { title: 'Dinner time, Begum! 🌙', body: 'A great end to an amazing day ❤️' },
+    }[mealTime];
+  } else if (isParents) {
+    return {
+      breakfast: { title: 'ناشتے کا وقت ہو گیا! 🌅', body: 'ابو امّی، صحت مند ناشتہ کریں' },
+      lunch: { title: 'لنچ کا وقت! ☀️', body: 'یار، لنچ میں کیا کھانا ہے؟' },
+      dinner: { title: 'کھانے کا وقت! 🌙', body: 'امّی، کھانے میں کیا بنا ہے' },
+    }[mealTime];
+  } else if (isSiblings) {
+    return {
+      breakfast: { title: 'Bongas! Nashta time! 🌅', body: 'Bonga no 01 and Bonga no 02, nashta kar lia karo -_-' },
+      lunch: { title: 'Lunch time, namoonas! ☀️', body: 'Have some lunch, you two namoonas' },
+      dinner: { title: 'Dinner time! 🌙', body: 'Get some dinner for yourselves :)' },
+    }[mealTime];
+  } else if (isPanda) {
+    return {
+      breakfast: { title: 'Breakfast time! 🌅', body: 'Eat more fiber and protein, fam' },
+      lunch: { title: 'Lunch time! ☀️', body: 'Eat something very light, like fruit' },
+      dinner: { title: 'Dinner time! 🌙', body: 'Skipping meals won\'t be a bad thing for once 😑' },
+    }[mealTime];
+  } else {
+    return {
+      breakfast: { title: 'Time for breakfast! 🌅', body: 'Start your day with a nutritious meal!' },
+      lunch: { title: "Don't forget lunch! ☀️", body: 'Keep your energy up!' },
+      dinner: { title: 'Dinner time! 🌙', body: 'End your day with a good meal!' },
+    }[mealTime];
+  }
+};
+
 Deno.serve(async () => {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-  const hour = new Date().getUTCHours() + 5; // Pakistan time UTC+5
+  const hour = new Date().getUTCHours() + 5;
 
-  let title = '';
-  let body = '';
+  let mealTime: 'breakfast' | 'lunch' | 'dinner';
 
   if (hour === 9) {
-  title = 'Time for breakfast! 🌅';
-  body = 'Start your day with a nutritious meal!';
-} else if (hour === 13) {
-  title = "Don't forget lunch! ☀️";
-  body = 'Keep your energy up!';
-} else if (hour === 19) {
-  title = 'Dinner time! 🌙';
-  body = 'End your day with a good meal!';
-} else {
-  return new Response('Not a meal time', { status: 200 });
-}
+    mealTime = 'breakfast';
+  } else if (hour === 13) {
+    mealTime = 'lunch';
+  } else if (hour === 19) {
+    mealTime = 'dinner';
+  } else {
+    return new Response('Not a meal time', { status: 200 });
+  }
 
-  const { data: tokens } = await supabase.from('fcm_tokens').select('token');
+  const { data: tokens } = await supabase.from('fcm_tokens').select('token, user_name');
 
   if (!tokens || tokens.length === 0) {
     return new Response('No tokens found', { status: 200 });
@@ -41,7 +78,9 @@ Deno.serve(async () => {
   const accessToken = await auth.getAccessToken();
   const projectId = serviceAccount.project_id;
 
-  for (const { token } of tokens) {
+  for (const { token, user_name } of tokens) {
+    const { title, body } = getMessages(user_name, mealTime)!;
+
     await fetch(`https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`, {
       method: 'POST',
       headers: {
