@@ -24,12 +24,12 @@ export const scheduleNotifications = async (isEisha: boolean) => {
       body: isEisha ? 'Start your day with something delicious 💕' : 'Start your day right!'
     },
     {
-      hour: 13, minute: 30,
+      hour: 13, minute: 0,
       title: isEisha ? "Don't forget lunch, Begum! ☀️" : "Don't forget lunch! ☀️",
       body: isEisha ? 'Wish we were together for lunch :)' : 'Keep your energy up!'
     },
     {
-      hour: 18, minute: 0,
+      hour: 19, minute: 0,
       title: isEisha ? 'Dinner time, Begum! 🌙' : 'Dinner time! 🌙',
       body: isEisha ? 'A great end to an amazing day ❤️' : 'End your day with a good meal!'
     }
@@ -48,7 +48,7 @@ export const scheduleNotifications = async (isEisha: boolean) => {
   ];
 
   // Water reminders every hour from 8 AM to 7 PM
-  for (let hour = 1; hour <= 19; hour++) {
+  for (let hour = 9; hour <= 19; hour++) {
     const scheduled = new Date();
     scheduled.setHours(hour, 0, 0, 0);
     if (scheduled <= now) scheduled.setDate(scheduled.getDate() + 1);
