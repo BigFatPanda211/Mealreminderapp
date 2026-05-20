@@ -3,8 +3,8 @@ import { MealCard } from './components/MealCard';
 import { WaterCounter } from './components/WaterCounter';
 import { Toaster, toast } from 'sonner';
 import { requestNotificationPermission, scheduleNotifications } from './notifications';
-import { logMeal, logWater, updateStreak } from './supabase';
 import { requestFCMToken } from './firebase';
+import { logMeal, logWater, updateStreak, supabase } from './supabase';
 
 const isEisha = (name: string) => ['eisha', 'begum'].includes(name.toLowerCase().trim());
 const isParents = (name: string) => ['abu', 'ammi'].includes(name.toLowerCase().trim());
@@ -41,7 +41,14 @@ export default function App() {
       setCompletedMeals(data.completedMeals || { breakfast: false, lunch: false, dinner: false });
       setMealDetails(data.mealDetails || { breakfast: '', lunch: '', dinner: '' });
       setCountry(data.country || '');
-      setName(data.name || '');
+      const savedName = data.name || '';
+      setName(savedName);
+      if (savedName) {
+        supabase.from('streaks').select('current_streak').eq('user_name', savedName).single()
+          .then(({ data }) => {
+            if (data) setStreak(data.current_streak);
+          });
+      }
     }
   }, []);
 
