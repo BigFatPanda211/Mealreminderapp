@@ -64,6 +64,7 @@ export default function App() {
     });
   }
 }, [name]);
+
   const handleMealEaten = (meal: 'breakfast' | 'lunch' | 'dinner', description: string) => {
     if (!completedMeals[meal]) {
       setCompletedMeals(prev => ({ ...prev, [meal]: true }));
@@ -273,7 +274,7 @@ const decrementWater = () => {
       <div className="w-full max-w-md space-y-8 py-8">
         <div className="text-center space-y-3">
           {streak > 0 && (
-  <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full ${theme.card} text-sm ${theme.text}`}>
+  <div className={`inline-flex items-center gap-2 px-5 py-2 rounded-full ${theme.card} border border-white/60 shadow-md text-sm font-semibold ${theme.text}`}>
     🔥 {streak} day streak!
   </div>
 )}
@@ -303,26 +304,25 @@ const decrementWater = () => {
           <MealCard meal="dinner" emoji="🌙" color={theme.dinnerColor} time="6:00 PM - 9:00 PM" isCompleted={completedMeals.dinner} mealDetail={mealDetails.dinner} recommendations={getRecommendations('dinner')} onEaten={(description) => handleMealEaten('dinner', description)} />
         </div>
 
-        <div className={`w-full ${theme.card} backdrop-blur-sm rounded-3xl p-5 shadow-sm`}>
-          <p className={`text-sm ${theme.subtext} mb-3 text-center`}>Daily Progress</p>
-          <div className="flex justify-between mb-2">
-            {['breakfast', 'lunch', 'dinner'].map((meal) => (
-              <div key={meal} className="flex flex-col items-center gap-2">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium transition-all ${completedMeals[meal as keyof typeof completedMeals] ? `${theme.completedBg} text-white` : `${theme.progressBg} text-[#b5b5c9]`}`}>
-                  {completedMeals[meal as keyof typeof completedMeals] ? '✓' : '○'}
-                </div>
-                <p className={`text-xs ${theme.subtext} capitalize`}>{meal}</p>
-              </div>
-            ))}
-          </div>
-          <div className={`w-full ${theme.progressBg} rounded-full h-2 mt-3`}>
-            <div
-              className={`bg-gradient-to-r ${theme.progress} h-2 rounded-full transition-all duration-500`}
-              style={{ width: `${(completedCount / 3) * 100}%` }}
-            />
-          </div>
-          <p className={`text-xs text-center ${theme.subtext} mt-2`}>{completedCount}/3 meals completed</p>
+        <div className={`w-full ${theme.card} backdrop-blur-sm rounded-3xl p-5 shadow-md border border-white/60`}>
+  <p className={`text-sm font-medium ${theme.text} mb-4 text-center`}>Daily Progress</p>
+  <div className="relative flex justify-between items-center mb-4">
+    <div className={`absolute top-6 left-[10%] right-[10%] h-0.5 ${theme.progressBg}`} />
+    <div
+      className={`absolute top-6 left-[10%] h-0.5 bg-gradient-to-r ${theme.progress} transition-all duration-700`}
+      style={{ width: `${completedCount === 0 ? 0 : completedCount === 1 ? 40 : completedCount === 2 ? 80 : 80}%` }}
+    />
+    {['breakfast', 'lunch', 'dinner'].map((meal) => (
+      <div key={meal} className="flex flex-col items-center gap-2 z-10">
+        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-medium transition-all duration-300 shadow-sm ${completedMeals[meal as keyof typeof completedMeals] ? `${theme.completedBg} text-white scale-110` : `bg-white ${theme.subtext} border-2 border-[#ebebf5]`}`}>
+          {completedMeals[meal as keyof typeof completedMeals] ? '✓' : meal === 'breakfast' ? '🌅' : meal === 'lunch' ? '☀️' : '🌙'}
         </div>
+        <p className={`text-xs font-medium ${completedMeals[meal as keyof typeof completedMeals] ? theme.text : theme.subtext} capitalize`}>{meal}</p>
+      </div>
+    ))}
+  </div>
+  <p className={`text-xs text-center ${theme.subtext} mt-1`}>{completedCount}/3 meals completed</p>
+</div>
 
         <WaterCounter count={waterCount} onIncrement={incrementWater} onDecrement={decrementWater} />
 
