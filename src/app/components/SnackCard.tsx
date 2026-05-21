@@ -90,7 +90,7 @@ export function SnackCard({
             <button
               onClick={handleSubmit}
               disabled={!inputValue.trim()}
-              className={`px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#ffb347] to-[#c084fc] text-white text-xs font-medium disabled:opacity-40`}
+              className={`shrink-0 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#ffb347] to-[#c084fc] text-white text-xs font-medium disabled:opacity-40`}
             >
               Done
             </button>
