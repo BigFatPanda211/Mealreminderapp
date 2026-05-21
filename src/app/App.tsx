@@ -41,6 +41,7 @@ export default function App() {
   const [name, setName] = useState("");
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [streak, setStreak] = useState(0);
+  const [fcmError, setFcmError] = useState<string | null>(null);
 
   const eisha = isEisha(name);
   const parents = isParents(name);
@@ -104,6 +105,9 @@ export default function App() {
         if (token) {
           console.log("FCM Token:", token);
           saveFCMToken(name, token);
+        } else {
+          const error = localStorage.getItem("fcm_error");
+          if (error) setFcmError(error);
         }
       });
     }
@@ -175,6 +179,7 @@ export default function App() {
     setMealDetails((prev) => ({ ...prev, [meal]: description }));
     logMeal(name, meal, description);
   };
+
   const incrementWater = () => {
     const newCount = Math.min(12, waterCount + 1);
     setWaterCount(newCount);
@@ -401,6 +406,11 @@ export default function App() {
               🔥 {streak} day streak!
             </div>
           )}
+          {fcmError && (
+            <div className="text-xs text-red-400 text-center px-2 py-1 bg-red-50 rounded-xl">
+              FCM: {fcmError}
+            </div>
+          )}
           <h1 className={`text-3xl ${theme.text}`}>{theme.title}</h1>
           <p className={`text-sm ${theme.subtext}`}>{theme.subtitle}</p>
           <div className="pt-2 space-y-2">
@@ -509,11 +519,10 @@ export default function App() {
         <div className="space-y-3">
           <button
             onClick={() => navigate("/reports")}
-            className={`w-full py-3 rounded-2xl bg-gradient-to-r from-[#a8d5ba] to-[#87ceeb] hover:from-[#90c9a5] hover:to-[#6bb6d6] text-white font-medium transition-all shadow-md active:scale-[0.98]`}
+            className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#a8d5ba] to-[#87ceeb] hover:from-[#90c9a5] hover:to-[#6bb6d6] text-white font-medium transition-all shadow-md active:scale-[0.98]"
           >
             Monthly Report
           </button>
-
           <button
             onClick={() => setShowResetConfirm(true)}
             className={`w-full py-3 rounded-2xl ${theme.reset} text-white font-medium transition-all shadow-sm`}

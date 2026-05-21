@@ -16,11 +16,12 @@ export const messaging = getMessaging(app);
 export const requestFCMToken = async () => {
   try {
     const token = await getToken(messaging, {
-  vapidKey: 'BOOkYZgvP7jpsZ-ukACYDAeODdkfhX3ETXB5ash9dZPE1gp6OQnuqPGk74IKseCUe6xBBLKGPkAFOMuCn9_q3EE'
-});
+      vapidKey: 'BOOkYZgvP7jpsZ-ukACYDAeODdkfhX3ETXB5ash9dZPE1gp6OQnuqPGk74IKseCUe6xBBLKGPkAFOMuCn9_q3EE'
+    });
     return token;
-  } catch (error) {
-    console.error('FCM token error:', error);
+  } catch (error: any) {
+    // Store error in localStorage so we can see it in the app
+    localStorage.setItem('fcm_error', error.message || String(error));
     return null;
   }
 };
