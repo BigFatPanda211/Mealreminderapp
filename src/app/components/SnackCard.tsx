@@ -78,21 +78,21 @@ export function SnackCard({
             </p>
           )
         ) : (
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
               placeholder={`Snack ${index}...`}
-              className="flex-1 py-1.5 px-3 rounded-xl bg-[#f8f8fb] text-[#5a5a7a] placeholder:text-[#b5b5c9] text-sm outline-none border border-[#ebebf5]"
+              className="w-50 py-1.5 px-3 rounded-xl bg-[#f8f8fb] text-[#5a5a7a] placeholder:text-[#b5b5c9] text-sm outline-none border border-[#ebebf5]"
             />
             <button
               onClick={handleSubmit}
               disabled={!inputValue.trim()}
-              className={`shrink-0 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#ffb347] to-[#c084fc] text-white text-xs font-medium disabled:opacity-40`}
+              className="w-8 h-8 rounded-full bg-gradient-to-r from-[#ffb347] to-[#c084fc] flex items-center justify-center disabled:opacity-40 shrink-0"
             >
-              Done
+              <Check className="w-4 h-4 text-white" strokeWidth={3} />
             </button>
           </div>
         )}
