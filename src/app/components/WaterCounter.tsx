@@ -1,4 +1,4 @@
-import { Plus, Minus, Droplet } from 'lucide-react';
+import { Plus, Minus, Droplet } from "lucide-react";
 
 interface WaterCounterProps {
   count: number;
@@ -7,7 +7,12 @@ interface WaterCounterProps {
   onSetCount: (count: number) => void;
 }
 
-export function WaterCounter({ count, onIncrement, onDecrement, onSetCount }: WaterCounterProps) {
+export function WaterCounter({
+  count,
+  onIncrement,
+  onDecrement,
+  onSetCount,
+}: WaterCounterProps) {
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-md border border-white/60">
       <div className="text-center mb-4">
@@ -15,7 +20,9 @@ export function WaterCounter({ count, onIncrement, onDecrement, onSetCount }: Wa
           <Droplet className="w-5 h-5 text-[#87ceeb]" fill="#87ceeb" />
           <h3 className="text-[#5a5a7a] font-medium">Water Intake</h3>
         </div>
-        <p className="text-xs text-[#b5b5c9]">Stay hydrated throughout the day</p>
+        <p className="text-xs text-[#b5b5c9]">
+          Stay hydrated throughout the day
+        </p>
       </div>
 
       <div className="flex items-center justify-center gap-6">
@@ -43,23 +50,23 @@ export function WaterCounter({ count, onIncrement, onDecrement, onSetCount }: Wa
 
       <div className="grid grid-cols-6 gap-1.5 mt-6">
         {[...Array(12)].map((_, i) => (
-  <div
-    key={i}
-    onClick={() => onSetCount(i + 1)}
-    className={`w-8 h-8 rounded-xl transition-all duration-300 flex items-center justify-center cursor-pointer hover:scale-125 active:scale-95 ${
-      i < count
-        ? 'bg-gradient-to-b from-[#87ceeb] to-[#5ba8d4] shadow-sm scale-110'
-        : 'bg-[#f0f0f5] hover:bg-[#e0f4ff]'
-    }`}
-  >
-    <Droplet
-      className={`w-5 h-5 transition-all ${
-        i < count ? 'text-white' : 'text-[#d0d0db]'
-      }`}
-      fill={i < count ? 'white' : 'none'}
-    />
-  </div>
-))}
+          <div
+            key={i}
+            onClick={() => onSetCount(i + 1)}
+            className={`w-8 h-8 rounded-xl transition-all duration-300 flex items-center justify-center cursor-pointer hover:scale-125 active:scale-95 ${
+              i < count
+                ? "bg-gradient-to-b from-[#87ceeb] to-[#5ba8d4] shadow-sm scale-110"
+                : "bg-[#f0f0f5] hover:bg-[#e0f4ff]"
+            }`}
+          >
+            <Droplet
+              className={`w-5 h-5 transition-all ${
+                i < count ? "text-white" : "text-[#d0d0db]"
+              }`}
+              fill={i < count ? "white" : "none"}
+            />
+          </div>
+        ))}
       </div>
 
       <div className="mt-3 text-center">
