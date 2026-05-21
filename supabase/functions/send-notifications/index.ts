@@ -53,15 +53,7 @@ Deno.serve(async () => {
 
   let mealTime: 'breakfast' | 'lunch' | 'dinner';
 
-  if (hour === 9) {
-    mealTime = 'breakfast';
-  } else if (hour === 13) {
-    mealTime = 'lunch';
-  } else if (hour === 19) {
-    mealTime = 'dinner';
-  } else {
-    return new Response('Not a meal time', { status: 200 });
-  }
+  mealTime = 'breakfast';
 
   const { data: tokens } = await supabase.from('fcm_tokens').select('token, user_name');
 
