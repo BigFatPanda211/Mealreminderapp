@@ -1,4 +1,5 @@
 ﻿import { useState, useEffect } from "react";
+import { SnackCard } from "./components/SnackCard";
 import { MealCard } from "./components/MealCard";
 import { WaterCounter } from "./components/WaterCounter";
 import { Toaster, toast } from "sonner";
@@ -6,6 +7,7 @@ import {
   requestNotificationPermission,
   scheduleNotifications,
 } from "./notifications";
+import { Plus } from "lucide-react";
 import { requestFCMToken } from "./firebase";
 import { useNavigate } from "react-router";
 import {
@@ -26,7 +28,10 @@ const isPanda = (name: string) =>
   ["asad", "kuchupuchu"].includes(name.toLowerCase().trim());
 
 export default function App() {
+  const [snacks, setSnacks] = useState<string[]>([]);
+  const [snackCount, setSnackCount] = useState(1);
   const [waterCount, setWaterCount] = useState(0);
+  const [showSnackWarning, setShowSnackWarning] = useState(false);
   const [completedMeals, setCompletedMeals] = useState({
     breakfast: false,
     lunch: false,
@@ -65,6 +70,8 @@ export default function App() {
         data.mealDetails || { breakfast: "", lunch: "", dinner: "" },
       );
       setCountry(data.country || "");
+      setSnacks(data.snacks || []);
+      setSnackCount(data.snackCount || 1);
       const savedName = data.name || "";
       setName(savedName);
       if (savedName) {
@@ -89,9 +96,19 @@ export default function App() {
         mealDetails,
         country,
         name,
+        snacks,
+        snackCount,
       }),
     );
-  }, [waterCount, completedMeals, mealDetails, country, name]);
+  }, [
+    waterCount,
+    completedMeals,
+    mealDetails,
+    country,
+    name,
+    snacks,
+    snackCount,
+  ]);
 
   useEffect(() => {
     requestNotificationPermission().then((granted) => {
@@ -103,7 +120,6 @@ export default function App() {
     if (name) {
       requestFCMToken().then((token) => {
         if (token) {
-          console.log("FCM Token:", token);
           saveFCMToken(name, token);
         } else {
           const error = localStorage.getItem("fcm_error");
@@ -180,6 +196,23 @@ export default function App() {
     logMeal(name, meal, description);
   };
 
+  const handleSnacked = (index: number, description: string) => {
+    const newSnacks = [...snacks];
+    newSnacks[index] = description;
+    setSnacks(newSnacks);
+  };
+
+  const handleSnackEdit = (index: number, description: string) => {
+    const newSnacks = [...snacks];
+    newSnacks[index] = description;
+    setSnacks(newSnacks);
+  };
+
+  const isAfter130AM = () => {
+    const now = new Date();
+    return now.getHours() === 2 || (now.getHours() > 2 && now.getHours() < 6);
+  };
+
   const incrementWater = () => {
     const newCount = Math.min(12, waterCount + 1);
     setWaterCount(newCount);
@@ -202,6 +235,8 @@ export default function App() {
     setCompletedMeals({ breakfast: false, lunch: false, dinner: false });
     setMealDetails({ breakfast: "", lunch: "", dinner: "" });
     setCountry("");
+    setSnacks([]);
+    setSnackCount(1);
     toast.success("Day has been reset!");
   };
 
@@ -467,6 +502,37 @@ export default function App() {
           />
         </div>
 
+        <div className="space-y-2">
+          <p className={`text-xs font-medium ${theme.subtext} px-1`}>Snacks</p>
+          {[...Array(snackCount)].map((_, i) => (
+            <SnackCard
+              key={i}
+              index={i + 1}
+              isCompleted={!!snacks[i]}
+              snackDetail={snacks[i] || ""}
+              onSnacked={(desc) => handleSnacked(i, desc)}
+              onEdit={(desc) => handleSnackEdit(i, desc)}
+              theme={theme}
+            />
+          ))}
+          {snackCount < 3 && snacks[snackCount - 1] && !isAfter130AM() && (
+            <button
+              onClick={() => setSnackCount((prev) => prev + 1)}
+              className={`w-full py-2 rounded-2xl border-2 border-dashed border-[#d4b3ff]/40 ${theme.subtext} text-sm flex items-center justify-center gap-2 hover:border-[#d4b3ff]/60 transition-all`}
+            >
+              <Plus className="w-4 h-4" /> Add another snack
+            </button>
+          )}
+          {snackCount === 3 && snacks[2] && (
+            <button
+              onClick={() => setShowSnackWarning(true)}
+              className={`w-full py-2 rounded-2xl border-2 border-dashed border-[#d4b3ff]/40 ${theme.subtext} text-sm flex items-center justify-center gap-2 hover:border-[#d4b3ff]/60 transition-all`}
+            >
+              <Plus className="w-4 h-4" /> Add another snack
+            </button>
+          )}
+        </div>
+
         <div
           className={`w-full ${theme.card} backdrop-blur-sm rounded-3xl p-5 shadow-md border border-white/60`}
         >
@@ -560,6 +626,25 @@ export default function App() {
                 Reset
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {showSnackWarning && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+          <div
+            className={`w-full max-w-sm rounded-3xl p-8 shadow-xl ${theme.card} space-y-4 text-center`}
+          >
+            <div className="text-8xl">🤨</div>
+            <p className={`text-lg font-medium ${theme.text}`}>
+              enough snacks for the day I think :)
+            </p>
+            <button
+              onClick={() => setShowSnackWarning(false)}
+              className={`w-full py-3 rounded-2xl ${theme.reset} text-white font-medium transition-all`}
+            >
+              ok fine 😔
+            </button>
           </div>
         </div>
       )}
