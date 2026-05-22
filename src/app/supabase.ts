@@ -9,7 +9,7 @@ export const saveFCMToken = async (userName: string, token: string) => {
   await supabase.from('fcm_tokens').upsert({
     user_name: userName,
     token
-  }, { onConflict: 'user_name,token' });
+  }, { onConflict: 'user_name' });
 };
 
 export const logMeal = async (userName: string, mealType: string, foodEaten: string) => {
