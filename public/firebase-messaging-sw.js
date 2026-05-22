@@ -16,12 +16,10 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
+// Don't call showNotification here - FCM handles it automatically
+// Only handle background message data if needed
 messaging.onBackgroundMessage((payload) => {
-  const { title, body } = payload.notification;
-  self.registration.showNotification(title, {
-    body,
-    icon: "/favicon.ico",
-    badge: "/favicon.ico",
-    vibrate: [200, 100, 200],
-  });
+  console.log("Background message received:", payload);
+  // Let FCM handle the notification display automatically
+  // Don't call self.registration.showNotification() here
 });
