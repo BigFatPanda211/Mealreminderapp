@@ -7,7 +7,7 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const saveFCMToken = async (userName: string, token: string) => {
   await supabase.from('fcm_tokens').upsert({
-    user_name: userName,
+    user_name: userName.toLowerCase().trim(),
     token
   }, { onConflict: 'user_name' });
 };
