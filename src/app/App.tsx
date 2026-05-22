@@ -3,10 +3,6 @@ import { SnackCard } from "./components/SnackCard";
 import { MealCard } from "./components/MealCard";
 import { WaterCounter } from "./components/WaterCounter";
 import { Toaster, toast } from "sonner";
-import {
-  requestNotificationPermission,
-  scheduleNotifications,
-} from "./notifications";
 import { Plus } from "lucide-react";
 import { requestFCMToken } from "./firebase";
 import { useNavigate } from "react-router";
@@ -109,12 +105,6 @@ export default function App() {
     snacks,
     snackCount,
   ]);
-
-  useEffect(() => {
-    requestNotificationPermission().then((granted) => {
-      if (granted) scheduleNotifications(eisha);
-    });
-  }, [eisha]);
 
   useEffect(() => {
     if (name) {
