@@ -38,7 +38,7 @@ export default function App() {
     lunch: "",
     dinner: "",
   });
-  const [country, setCountry] = useState("");
+  const [country, setCountry] = useState("pakistan");
   const [name, setName] = useState("");
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [streak, setStreak] = useState(0);
