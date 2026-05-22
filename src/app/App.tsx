@@ -107,16 +107,19 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    if (name) {
+    if (!name) return;
+    const timer = setTimeout(() => {
       requestFCMToken().then((token) => {
         if (token) {
-          saveFCMToken(name, token);
+          saveFCMToken(name.toLowerCase().trim(), token);
         } else {
           const error = localStorage.getItem("fcm_error");
           if (error) setFcmError(error);
         }
       });
-    }
+    }, 2000); // wait 2 seconds after user stops typing
+
+    return () => clearTimeout(timer);
   }, [name]);
 
   const handleMealEaten = (
