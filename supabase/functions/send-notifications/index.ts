@@ -7,7 +7,6 @@ const serviceAccountJson = Deno.env.get('FCM_SERVICE_ACCOUNT')!;
 
 const getMessages = (userName: string, mealTime: 'breakfast' | 'lunch' | 'dinner') => {
   const name = userName.toLowerCase().trim();
-
   const isEisha = ['eisha', 'begum'].includes(name);
   const isParents = ['abu', 'ammi'].includes(name);
   const isSiblings = ['ashi', 'mano'].includes(name);
@@ -46,28 +45,33 @@ const getMessages = (userName: string, mealTime: 'breakfast' | 'lunch' | 'dinner
   }
 };
 
+const getWaterMessage = (userName: string) => {
+  const name = userName.toLowerCase().trim();
+  const isEisha = ['eisha', 'begum'].includes(name);
+  const isParents = ['abu', 'ammi'].includes(name);
+  const isSiblings = ['ashi', 'mano'].includes(name);
+
+  if (isEisha) return { title: 'Time to drink water, Begum! 💧', body: 'Stay hydrated my love 💕' };
+  if (isParents) return { title: 'پانی پینے کا وقت! 💧', body: 'صحت مند رہیں، پانی پیتے رہیں' };
+  if (isSiblings) return { title: 'Drink water, bongas! 💧', body: 'Stay hydrated you two namoonas' };
+  return { title: 'Time to drink water! 💧', body: 'Stay hydrated throughout the day!' };
+};
+
 Deno.serve(async () => {
   const supabase = createClient(supabaseUrl, supabaseKey);
+  const hour = new Date().getUTCHours() + 5; // Pakistan time UTC+5
 
-  const hour = new Date().getUTCHours() + 5;
+  let isWaterReminder = false;
+  let mealTime: 'breakfast' | 'lunch' | 'dinner' | null = null;
 
-  let mealTime: 'breakfast' | 'lunch' | 'dinner';
-
-  if (hour === 9) {
-    mealTime = 'breakfast';
-  } else if (hour === 13) {
-    mealTime = 'lunch';
-  } else if (hour === 19) {
-    mealTime = 'dinner';
-  } else {
-    return new Response('Not a meal time', { status: 200 });
-  }
+  if (hour === 9) mealTime = 'breakfast';
+  else if (hour === 13) mealTime = 'lunch';
+  else if (hour === 19) mealTime = 'dinner';
+  else if (hour >= 9 && hour <= 19) isWaterReminder = true;
+  else return new Response('Outside notification hours', { status: 200 });
 
   const { data: tokens } = await supabase.from('fcm_tokens').select('token, user_name');
-
-  if (!tokens || tokens.length === 0) {
-    return new Response('No tokens found', { status: 200 });
-  }
+  if (!tokens || tokens.length === 0) return new Response('No tokens found', { status: 200 });
 
   const serviceAccount = JSON.parse(serviceAccountJson);
   const auth = new GoogleAuth({
@@ -79,7 +83,9 @@ Deno.serve(async () => {
   const projectId = serviceAccount.project_id;
 
   for (const { token, user_name } of tokens) {
-    const { title, body } = getMessages(user_name, mealTime)!;
+    const { title, body } = mealTime
+      ? getMessages(user_name, mealTime)!
+      : getWaterMessage(user_name);
 
     await fetch(`https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`, {
       method: 'POST',
@@ -88,10 +94,7 @@ Deno.serve(async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        message: {
-          token,
-          notification: { title, body },
-        }
+        message: { token, notification: { title, body } }
       }),
     });
   }
