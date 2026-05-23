@@ -12,6 +12,7 @@ import {
   updateStreak,
   supabase,
   saveFCMToken,
+  editMeal,
 } from "./supabase";
 
 const isEisha = (name: string) =>
@@ -186,7 +187,7 @@ export default function App() {
     description: string,
   ) => {
     setMealDetails((prev) => ({ ...prev, [meal]: description }));
-    logMeal(name, meal, description);
+    editMeal(name, meal, description);
   };
 
   const handleSnacked = (index: number, description: string) => {

@@ -21,6 +21,16 @@ export const logMeal = async (userName: string, mealType: string, foodEaten: str
   });
 };
 
+export const editMeal = async (userName: string, mealType: string, foodEaten: string) => {
+  const today = new Date().toISOString().split('T')[0];
+  await supabase
+    .from('meal_logs')
+    .update({ food_eaten: foodEaten })
+    .eq('user_name', userName)
+    .eq('meal_type', mealType)
+    .eq('date', today);
+};
+
 export const logWater = async (userName: string, glasses: number) => {
   await supabase.from('water_logs').upsert({
     user_name: userName,
