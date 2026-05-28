@@ -55,6 +55,20 @@ export default function App() {
     const saved = localStorage.getItem("dailyNourish");
     if (saved) {
       const data = JSON.parse(saved);
+      const lastDate = data.lastDate;
+      const today = new Date().toISOString().split("T")[0];
+
+      if (lastDate && lastDate !== today) {
+        setWaterCount(0);
+        setCompletedMeals({ breakfast: false, lunch: false, dinner: false });
+        setMealDetails({ breakfast: "", lunch: "", dinner: "" });
+        setSnacks([]);
+        setSnackCount(1);
+        setName(data.name || "");
+        setCountry(data.country || "pakistan");
+        return;
+      }
+
       setWaterCount(data.waterCount || 0);
       setCompletedMeals(
         data.completedMeals || {
@@ -66,7 +80,7 @@ export default function App() {
       setMealDetails(
         data.mealDetails || { breakfast: "", lunch: "", dinner: "" },
       );
-      setCountry(data.country || "");
+      setCountry(data.country || "pakistan");
       setSnacks(data.snacks || []);
       setSnackCount(data.snackCount || 1);
       const savedName = data.name || "";
@@ -95,6 +109,7 @@ export default function App() {
         name,
         snacks,
         snackCount,
+        lastDate: new Date().toISOString().split("T")[0],
       }),
     );
   }, [
@@ -118,8 +133,7 @@ export default function App() {
           if (error) setFcmError(error);
         }
       });
-    }, 2000); // wait 2 seconds after user stops typing
-
+    }, 2000);
     return () => clearTimeout(timer);
   }, [name]);
 
