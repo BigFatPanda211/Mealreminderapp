@@ -1,3 +1,23 @@
-@import './fonts.css';
-@import './tailwind.css';
-@import './theme.css';
+@import "./fonts.css";
+@import "./tailwind.css";
+@import "./theme.css";
+@keyframes heartRain {
+  0% {
+    transform: translateY(-50px) rotate(-10deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(110vh) rotate(10deg);
+    opacity: 0;
+  }
+}
+
+.heart-float {
+  animation: heartRain linear infinite;
+}

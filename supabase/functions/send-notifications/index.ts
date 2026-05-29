@@ -12,6 +12,7 @@ const getMessages = (userName: string, mealTime: 'breakfast' | 'lunch' | 'dinner
   const isSiblings = ['ashi', 'mano'].includes(name);
   const isPanda = ['asad', 'kuchupuchu'].includes(name);
 
+  
   if (isEisha) {
     return {
       breakfast: { title: 'Time for breakfast, Begum! ❤️', body: 'Start your day with something delicious 💕' },
@@ -98,6 +99,25 @@ Deno.serve(async () => {
       }),
     });
   }
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) scale(1.2);
+    opacity: 0;
+  }
+}
 
-  return new Response(`Sent to ${tokens.length} devices`, { status: 200 });
+.heart-float {
+  animation: floatUp linear infinite;
+}
+ return new Response(`Sent to ${tokens.length} devices`, { status: 200 });
 });

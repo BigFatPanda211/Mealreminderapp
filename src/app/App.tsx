@@ -44,12 +44,14 @@ export default function App() {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [streak, setStreak] = useState(0);
   const [fcmError, setFcmError] = useState<string | null>(null);
+  const [dob, setDob] = useState("");
 
   const eisha = isEisha(name);
   const parents = isParents(name);
   const siblings = isSiblings(name);
   const panda = isPanda(name);
   const navigate = useNavigate();
+  const [showBirthdayPopup, setShowBirthdayPopup] = useState(true);
 
   useEffect(() => {
     const saved = localStorage.getItem("dailyNourish");
@@ -64,6 +66,7 @@ export default function App() {
         setMealDetails({ breakfast: "", lunch: "", dinner: "" });
         setSnacks([]);
         setSnackCount(1);
+        setDob(data.dob || "");
         setName(data.name || "");
         setCountry(data.country || "pakistan");
         return;
@@ -110,6 +113,7 @@ export default function App() {
         snacks,
         snackCount,
         lastDate: new Date().toISOString().split("T")[0],
+        dob,
       }),
     );
   }, [
@@ -120,8 +124,8 @@ export default function App() {
     name,
     snacks,
     snackCount,
+    dob,
   ]);
-
   useEffect(() => {
     if (!name) return;
     const timer = setTimeout(() => {
@@ -435,10 +439,44 @@ export default function App() {
               dinnerColor: "#d4b3ff",
             };
 
+  const isBirthday = () => {
+    if (!dob) return false;
+
+    const today = new Date();
+
+    return (
+      dob.trim() === "05-30" &&
+      today.getMonth() + 1 === 5 &&
+      today.getDate() === 30
+    );
+  };
+
+  const birthday = eisha && isBirthday();
+
   return (
     <div
       className={`min-h-screen w-full bg-gradient-to-br ${theme.bg} flex flex-col items-center justify-start p-6 transition-all duration-700`}
     >
+      {birthday && (
+        <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">
+          {[...Array(25)].map((_, i) => (
+            <div
+              key={i}
+              className="heart-float absolute"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: "-50px",
+                fontSize: `${0.8 + Math.random() * 1.2}rem`,
+                animationDuration: `${5 + Math.random() * 8}s`,
+                animationDelay: `-${Math.random() * 10}s`,
+                opacity: 0.4 + Math.random() * 0.4,
+              }}
+            >
+              ❤️
+            </div>
+          ))}
+        </div>
+      )}
       <Toaster position="top-center" richColors />
       <div className="w-full max-w-md space-y-5 py-6">
         <div className="text-center space-y-3">
@@ -471,6 +509,21 @@ export default function App() {
               placeholder="Enter your country (e.g., Pakistan, Japan)"
               className={`w-full py-2.5 px-4 rounded-2xl ${theme.input} backdrop-blur-sm ${theme.text} placeholder:text-[#b5b5c9] outline-none focus:ring-2 transition-all text-center text-sm shadow-sm`}
             />
+            {eisha && (
+              <input
+                type="text"
+                value={dob}
+                onChange={(e) => {
+                  const value = e.target.value
+                    .replace(/[^\d-]/g, "")
+                    .slice(0, 5);
+
+                  setDob(value);
+                }}
+                placeholder="Birthday (MM-DD e.g. 05-30)"
+                className={`w-full py-2.5 px-4 rounded-2xl ${theme.input} backdrop-blur-sm ${theme.text} placeholder:text-[#b5b5c9] outline-none focus:ring-2 transition-all text-center text-sm shadow-sm`}
+              />
+            )}
           </div>
         </div>
 
@@ -652,6 +705,36 @@ export default function App() {
               className={`w-full py-3 rounded-2xl ${theme.reset} text-white font-medium transition-all`}
             >
               ok fine 😔
+            </button>
+          </div>
+        </div>
+      )}
+      {birthday && showBirthdayPopup && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+          <div
+            className="w-full max-w-sm rounded-3xl p-8 shadow-2xl space-y-4 text-center"
+            style={{
+              background:
+                "linear-gradient(135deg, #FFCBE1, #D6E5BD, #F9E1A8, #BCD8EC, #DCCCEC, #FFDAB4)",
+            }}
+          >
+            <img
+              src="/birthday.gif"
+              alt="Birthday!"
+              className="w-48 h-48 object-cover rounded-2xl mx-auto"
+            />
+            <h2 className="text-2xl font-semibold text-[#5a5a7a] drop-shadow">
+              Happy Birthday Begum!
+            </h2>
+            <p className="text-[#5a5a7a] text-sm leading-relaxed">
+              I Love you with every atom of my being ❤️
+            </p>
+            <button
+              onClick={() => setShowBirthdayPopup(false)}
+              className={`w-full py-3 rounded-2xl ${theme.reset} text-white font-medium transition-all`}
+            >
+              By tapping this button, you acknowledge that Asad loves you more
+              ❤️
             </button>
           </div>
         </div>
